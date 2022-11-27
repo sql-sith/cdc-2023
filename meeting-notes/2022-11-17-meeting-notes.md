@@ -1,18 +1,23 @@
-# November 17, 2022
+# IT Club Cyber Defense Meeting Notes
 
-| Location                         | Present | Missing |
-|----------------------------------|---------|---------|
-| GoDaddy Hiawath Office           | Anna    | Tristan | 
-| Roaster's Coffee Conference Room | Melissa |         |
-|                                  | Michael |         |
-|                                  | Dan     |         |
+| 17-November-2022    |                                           |
+|---------------------|-------------------------------------------|
+| Location:           | GoDaddy Hiawatha Roasters Conference Room |
+| Present:            | Anna, Melissa, Michael, Dan               |
+| Missing:            | Tristan (robotics meet)                   |
 
-## Flow of discussion
-
-1. Summary of `ssh`
-2. Ways to tell if `ssh` is listening for connections on your computer
-3. Ways to tell what other services are listening for connections on your computer
-4. How to make very wise cows
+- [IT Club Cyber Defense Meeting Notes](#it-club-cyber-defense-meeting-notes)
+  - [Summary of `ssh`](#summary-of-ssh)
+    - [How to install **OpenSSH Server**](#how-to-install-openssh-server)
+  - [Ways to tell if `ssh` is listening for connections on your computer](#ways-to-tell-if-ssh-is-listening-for-connections-on-your-computer)
+    - [Using `systemctl`](#using-systemctl)
+    - [Using `netstat`](#using-netstat)
+    - [Using `lsof`](#using-lsof)
+  - [Ways to tell what other services are listening for connections on your computer](#ways-to-tell-what-other-services-are-listening-for-connections-on-your-computer)
+  - [How to make Very Wise Cows(TM)](#how-to-make-very-wise-cowstm)
+  - [Homework](#homework)
+    - [Background](#background)
+    - [Tasks](#tasks)
 
 ## Summary of `ssh`
 
@@ -24,258 +29,152 @@ There are many `ssh` implementations. We used one of the most popular, called **
 
 In this scenario, your computer, running `ssh`, is the client, because it initiates the "conversation" between the two computers by sending a connection request to the other computer. The other computer, running `sshd`, is the server, because it is listening for these requests, and responds when it receives one.
 
-Here is a quick reminder of how to install **OpenSSH Server**:
+### How to install **OpenSSH Server**
 
 ```bash
-# if you have not recently updated apt's
-# software catalog, do this first:
-# sudo apt update
+if you have not recently updated apt's
+software catalog, do this first:
+sudo apt update
 
 sudo apt install openssh-server
 ```
-That's it - one command will install the SSH Server for us. As mentioned before, installing the OpenSSH Server also installs the `ssh` client automatically. 
+
+That's it - one command will install the SSH Server for us. As mentioned before, installing the OpenSSH Server also installs the `ssh` client automatically.
 
 If you are on a computer and you only want to install the client, you should install the package named `openssh-client`. It will install `ssh` but not `sshd`.
 
 ## Ways to tell if `ssh` is listening for connections on your computer
 
-1. Check TCP port 22
+There are several ways to determine if a service like `sshd` is running on your computer. This section will recap how to do this with `systemctl`, `netstat`, and `lsof`.
 
-    >Sidebar: we briefly discussed some differences between TCP and UDP, which are two of the main protocols in the IP protocol suite. 
-    >
-    >TCP is connection-oriented, so it emphasizes things like having all of the data arrive in the same order it was sent, and keeping the connection between both computers open, much like a phone call.
-    >
-    >UDP is not connection oriented. It doesn't care about the order in which the recipient receives the packets at all. Each packet might get routed separately, with different delays in arrival. 
-    >
-    >It's a big topic. Google for more info, or come to office hours! If we have them.
+### Using `systemctl`
 
-    To know which services are supposed to receive which network packets, port numbers are used. They are just another number that gives a network destination that is more specific than an IP address. You could think of this like an apartment building: the IP address of a computer is like the address of an apartment building, and a port number is like the apartment number.
-
-    The port the `sshd` typically listens on is TCP port 22. One way to see if `sshd` is running on your computer is to use a program that can tell you if anything is listening on TCP port 22. There are lots of programs that can do this. 
-
-    a) `netstat`
-
-    This program doesn't seem to get installed by default anymore. If you try to run it, Ubuntu will actually tell you what package you need to install to get it:
-
-        ```bash
-        christopherl@shellsburg:~$ netstat -an 
-
-        Command 'netstat' not found, but can be installed with:
-
-        sudo apt install net-tools
-
-        christopherl@shellsburg:~$ sudo apt install net-tools
-
-        Reading package lists... Done
-        Building dependency tree... Done
-        Reading state information... Done
-
-        The following packages were automatically installed and are no longer required:
-        libavahi-ui-gtk3-0 libflashrom1 libftdi1-2 libvncclient1 remmina-common
-        Use 'sudo apt autoremove' to remove them.
-
-        The following NEW packages will be installed:
-        net-tools
-        0 upgraded, 1 newly installed, 0 to remove and 40 not upgraded.
-
-        Need to get 204 kB of archives.
-        After this operation, 819 kB of additional disk space will be used.
-
-        Get:1 http://us.archive.ubuntu.com/ubuntu jammy/main amd64 net-tools amd64 1.60+git20181103.0eebece-1ubuntu5 [204 kB]
-        Fetched 204 kB in 0s (431 kB/s)
-
-        Selecting previously unselected package net-tools.
-        (Reading database ... 209094 files and directories currently installed.)
-
-        Preparing to unpack .../net-tools_1.60+git20181103.0eebece-1ubuntu5_amd64.deb ...
-        Unpacking net-tools (1.60+git20181103.0eebece-1ubuntu5) ...
-        Setting up net-tools (1.60+git20181103.0eebece-1ubuntu5) ...
-        Processing triggers for man-db (2.10.2-1) ...
-        ```    
-
-    After you have `netstat` installed, you can use it along with the `grep` command to see what program, if any, is listening for connections on TCP port 22. You can always use `man <command-name>` to see all the parameters for a command, but here are the ones you need to know for `netstat` and `grep` in order to understand the command I'm about to show you.
-
-    `grep` information:
-
-    - `grep` searches for text strings. 
-    - `grep` can perform both very simple and very complicated searches.
-    - We are goint to use three of the special search features that are available in `grep`.
-        - The symbol `^` is an "anchor" that means that the next character must be at the beginning of the string to match. So if you tell `grep` to search for the pattern `^tack`, it will match the string "tackle football", but it will not match the string "attack submarine."
-        - You can give `grep` options by putting them inside parentheses and separating them with vertical pipes. For example, the search pattern `c(o|u|lou)t` will match "cot", "cut", and "clout", but it will not match "cat".
-        - In `grep`, the period (`.`) is a wildcard that can match any character. The asterisk (`*`) is called a quantifier, and it means "the thing right in front of me can occur any number of times, from zero to infinity." So the string `.*` is a pattern that matches any character at all, and that match can be repeated any number of times. In simple English, `.*` means "anything" to `grep`.
-    - The -E or --extended-regexp parameter makes `grep` turn on its advanced search capabilities, such as the features I just mentioned.
-    - The -v or --invert-match parameter makes `grep` return non-matching strings instead of matching strings. So if your search pattern is `c(o|u|lou)t`, `grep` will NOT return "cot", "cut", or "clout" as matches, but it WILL return "cat", because `grep` is returning non-matching strings.
-    
-    `netstat` information:
-    - The -a or --all parameter makes `netstat` show information for (a)ll ports, including ports where services are listening for new connections.
-    - The -n or --numeric parameter makes `netstat` show (n)umbers instead of names when displaying IP addresses, ports, or services. This lets you see results faster.
-    - The -p or --programs parameter makes `netstat` show information about the (p)rogram that is using the port.
-    - If a service is using a port to listen for a new connection, then `netstat` will display the word `LISTEN` as the port's status.
-    - `netstat` reports on a number of connection types other than tcp and udp ports. We can identify these by having grep match only those lines that start with `tcp` or `udp`.
-
-    Here are the first 20 lines of output from `netstat` on my laptop, run without any parameters.
-
-    ```bash
-    christopherl@shellsburg:~$ netstat |more
-    Active Internet connections (w/o servers)
-    Proto Recv-Q Send-Q Local Address           Foreign Address         State      
-    udp        0      0 shellsburg:bootpc       _gateway:bootps         ESTABLISHED
-    Active UNIX domain sockets (w/o servers)
-    Proto RefCnt Flags       Type       State         I-Node   Path
-    unix  2      [ ]         DGRAM                    23724    /run/user/1000/systemd/notify
-    unix  3      [ ]         DGRAM      CONNECTED     16037    /run/systemd/notify
-    unix  2      [ ]         DGRAM                    16051    /run/systemd/journal/syslog
-    unix  17     [ ]         DGRAM      CONNECTED     16060    /run/systemd/journal/dev-log
-    unix  9      [ ]         DGRAM      CONNECTED     16062    /run/systemd/journal/socket
-    unix  3      [ ]         STREAM     CONNECTED     61363    
-    unix  3      [ ]         STREAM     CONNECTED     26621    /run/user/1000/bus
-    unix  2      [ ]         DGRAM                    26137    
-    unix  3      [ ]         STREAM     CONNECTED     25339    /run/user/1000/bus
-    unix  3      [ ]         STREAM     CONNECTED     25235    
-    unix  3      [ ]         STREAM     CONNECTED     23791    
-    unix  3      [ ]         STREAM     CONNECTED     19317    /run/dbus/system_bus_socket
-    unix  3      [ ]         STREAM     CONNECTED     18959    
-    unix  3      [ ]         STREAM     CONNECTED     25434    
-    unix  3      [ ]         STREAM     CONNECTED     23117    /run/user/1000/bus
-    ```
-
-    Notice that only one of the rows identifies itself as either `tcp` or `udp`, and the others say `udp`. We will use grep in the next command to filter only for lines that say either `tcp` or `udp` at the start of the line. Also notice that none of these entries say that they are listening. This is because `netstat` only shows connections by default. A listener is not a connection. It is listening for requests for connections. If it receives a request, it will connect the new client to the server and then go back to listen for the next connection request. `netstat` will only show listeners if you say that you want to see `--all` (`-a`) connections. We also don't have information about which `--program` (`-p`) owns each port.
-
-    Here is our new command, which should give us the output we want. The first command tells `netstat` to show all connections (including listeners) and to include information about the programs that own each connection. That information is piped to the second command, `grep`, which is told to find all lines that have EITHER `tcp` or `udp` (that's the `(tcp|ucp)` part) at the beginning of the string (that's the `^` anchor) and which have the literal string `LISTEN` later in the line (after any string at all: the `.*` which stands for any number of any character).
-
-    ```bash
-    christopherl@shellsburg:~$ sudo netstat --all --program | grep --extended-regexp '^(tcp|udp).*LISTEN'
-    tcp        0      0 0.0.0.0:ssh             0.0.0.0:*               LISTEN      24188/sshd: /usr/sb 
-    tcp        0      0 localhost:ipp           0.0.0.0:*               LISTEN      5279/cupsd          
-    tcp        0      0 localhost:domain        0.0.0.0:*               LISTEN      478/systemd-resolve 
-    tcp6       0      0 ip6-localhost:ipp       [::]:*                  LISTEN      5279/cupsd          
-    tcp6       0      0 [::]:ssh                [::]:*                  LISTEN      24188/sshd: /usr/sb 
-    ```
-
-    >You need root credentials to run this command. If you run without root permissions, you will get a warning, just like I always do. :) So, use `sudo`.
-
-    Running the same command with the `--number` parameter makes `netstat` provide numbers instead of names for IP addresses, ports, and user names. On my laptop, that looks like this.
-
-    ```bash
-    christopherl@shellsburg:~$ sudo netstat --all --program --numeric | grep --extended-regexp '^(tcp|udp).*LISTEN'
-    tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      24188/sshd: /usr/sb 
-    tcp        0      0 127.0.0.1:631           0.0.0.0:*               LISTEN      5279/cupsd          
-    tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      478/systemd-resolve 
-    tcp6       0      0 ::1:631                 :::*                    LISTEN      5279/cupsd          
-    tcp6       0      0 :::22                   :::*                    LISTEN      24188/sshd: /usr/sb 
-    ```
-
-    This output is better than what we had before because it looks like it is focused on a few rows that are listening for connections. You can also see that port 22 (the :22 in the third column) is owned by a process named `sshd` with process ID 24188.
-    
-    However, the column headers are missing, so if you don't already know what you are looking at, there's not a lot here to help you out. I could give you a more complicated search for `grep` to tell it to include the header rows, but there's an easier way.
-
-    Right now, the vast majority of lines that we are not interested in are the ones that start with the string `unix`. We can tell `grep` to look for lines that start with `unix` and use the --invert-match parameter to make `grep` return only non-matching lines. This basically tells `grep` to ignore lines starting with `unix`. Just like before, you can see that port 22 is in use by a program named sshd that has a process ID 24188.
-
-    ```bash
-    christopherl@shellsburg:~$ sudo netstat --all --program --numeric | grep --extended-regexp --invert-match '^unix'
-    Active Internet connections (servers and established)
-    Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
-    tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      24188/sshd: /usr/sb 
-    tcp        0      0 127.0.0.1:631           0.0.0.0:*               LISTEN      5279/cupsd          
-    tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      478/systemd-resolve 
-    tcp6       0      0 ::1:631                 :::*                    LISTEN      5279/cupsd          
-    tcp6       0      0 :::22                   :::*                    LISTEN      24188/sshd: /usr/sb 
-    udp        0      0 0.0.0.0:60631           0.0.0.0:*                           678/avahi-daemon: r 
-    udp        0      0 0.0.0.0:5353            0.0.0.0:*                           678/avahi-daemon: r 
-    udp        0      0 127.0.0.53:53           0.0.0.0:*                           478/systemd-resolve 
-    udp        0      0 10.0.2.15:68            10.0.2.2:67             ESTABLISHED 682/NetworkManager  
-    udp        0      0 0.0.0.0:631             0.0.0.0:*                           5281/cups-browsed   
-    udp6       0      0 :::5353                 :::*                                678/avahi-daemon: r 
-    udp6       0      0 :::45307                :::*                                678/avahi-daemon: r 
-    raw6       0      0 :::58                   :::*                    7           682/NetworkManager  
-    Active UNIX domain sockets (servers and established)
-    Proto RefCnt Flags       Type       State         I-Node   PID/Program name     Path
-    ``` 
-
-    This output has a few more rows of output to look through, but it is a little more clear, because the column headers are present. You can see the protocol for each port: tcp, tcp v6, udp, or udp v6 ... or raw/raw v6. You can see that the send and receive queues are empty for each port, which is a good thing, because it means that communication is not backing up. The local address is the address on the computer where you ran `netstat`, and the number after the colon is the port number. This column is needed because computers typically have at least two IP addresses, one of which is a special *loopback* address. If a process has bound a port to all of a computer's addresses, this is represented by `0.0.0.0:<port number>` for IPv4 addresses and by `:::<port number>` for IPv6 addresses.
-
-2. Using `lsof`
-
-I said I'd give you a couple of ways to figure out if you had `sshd` running on your local port 22. For `netstat`, I tried to teach a lot along the way. For `lsof`, I'm going almost completely the other direction. `lsof` shows lists of open files. Lots of things are considered files in Linux. In fact, pretty much everything is considered a file at some level, and there is even an entire filesystem that exists to make Linux networking look like a Linux filesystem so that programmers use the network as though it were a collection of files. It's a blessing; it's a curse. Here's an example of using `lsof` to get information similar to what we got with `netstat`. If this way seems easier, congratulations! It probably means you've learned something.
+The most basic way to check for a running service on Ubuntu is to use `systemctl`. If you know the name of a service, you can get its status from `systemctl`. You can see in the output below that the `sshd` service is active. The log output at the bottom says it is listening on port 22.
 
 ```bash
-christopherl@shellsburg:/proc/24188/net$ sudo lsof -i | grep LISTEN
+christopherl@shellsburg:~$ systemctl status sshd
+● ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
+     Active: active (running) since Sun 2022-11-20 19:33:29 CST; 5 days ago
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+    Process: 24187 ExecStartPre=/usr/sbin/sshd -t (code=exited, status=0/SUCCESS)
+   Main PID: 24188 (sshd)
+      Tasks: 1 (limit: 4626)
+     Memory: 2.6M
+        CPU: 15ms
+     CGroup: /system.slice/ssh.service
+             └─24188 "sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups"
 
+Nov 20 19:33:29 shellsburg systemd[1]: Starting OpenBSD Secure Shell server...
+Nov 20 19:33:29 shellsburg sshd[24188]: Server listening on 0.0.0.0 port 22.
+Nov 20 19:33:29 shellsburg sshd[24188]: Server listening on :: port 22.
+Nov 20 19:33:29 shellsburg systemd[1]: Started OpenBSD Secure Shell server.
+```
+
+### Using `netstat`
+
+One of the tools IT professionals rely heavily on for checking port usage is `netstat`. It can tell you the status of every network connection currently open on your computer as well as every listener that is waiting for network requests. We will use `netstat` to see if any program is listening for network requests on TCP port 22, which is SSH's default listener port.
+
+>**Sidebar: TCP vs UDP**
+>
+>We briefly discussed some differences between TCP and UDP, which are two of the main protocols in the IP protocol suite.
+>
+>TCP is connection-oriented, so it emphasizes things like having all of the data arrive in the same order it was sent, and keeping the connection between both computers open, much like a phone call.
+>
+>UDP is not connection oriented. It doesn't care about the order in which the recipient receives the packets at all. Each packet might get routed separately, with different delays in arrival.
+>
+>It's a big topic. Google for more info, or come to office hours! If we have them.
+>
+><hr/>
+>
+>**Sidebar: Ports**
+>
+>To know which services are supposed to receive which network packets, port numbers are used. They are just another number that gives a network destination that is more specific than an IP address. You could think of this like an apartment building: the IP address of a computer is like the address of an apartment building, and a port number is like the apartment number.
+
+The `netstat` program may not be installed on your computer. If not, you should be able to install it on versions 20.04 LTS or 22.04 LTS of Ubuntu by running `sudo apt install net-tools`.
+
+After you have `netstat` installed, you can use it to list all tcp ports that have processes attached to them that are listening for network requests. You can even have `netstat` tell you what process is listening on each port (you have to use `root` permissions to do this, which is why the following command starts with `sudo`).
+
+```bash
+christopherl@shellsburg:~$ sudo netstat --tcp --listening --programs --numeric-ports
+
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      24188/sshd: /usr/sb 
+tcp        0      0 localhost:631           0.0.0.0:*               LISTEN      27069/cupsd         
+tcp        0      0 localhost:53            0.0.0.0:*               LISTEN      478/systemd-resolve 
+tcp6       0      0 ip6-localhost:631       [::]:*                  LISTEN      27069/cupsd         
+tcp6       0      0 [::]:22                 [::]:*                  LISTEN      24188/sshd: /usr/sb  
+```
+
+You can see in the output that process `24188/sshd` is listening on port 22, which is the default ssh port. The local `tcp` address of `0.0.0.0`means that `sshd` is listening on every TCPv4 address that the computer is connected to. Similarly, the `tcp6` address of `[::]:` means that `sshd` is listening on every TCPv6 address that the computer is attached to. Long story short, this computer will take `ssh` connections from any available network connection.
+
+### Using `lsof`
+
+I want to also briefly mention the program `lsof` which can show you lists of open files. That might not sound overly impressive until you learn that almost everything in Linux has a representation as a file somewhere, so this goes beyond normal files. In this case, we can ask `lsof` to show us listening `tcp` ports and it will give us the same information `netstat` did. Again, you need to use `sudo` for this.
+
+```bash
+christopherl@shellsburg:~$ sudo lsof -iTCP -sTCP:LISTEN
+
+COMMAND     PID            USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
 systemd-r   478 systemd-resolve   14u  IPv4  17151      0t0  TCP localhost:domain (LISTEN)
-cupsd      5279            root    6u  IPv6  64097      0t0  TCP ip6-localhost:ipp (LISTEN)
-cupsd      5279            root    7u  IPv4  64098      0t0  TCP localhost:ipp (LISTEN)
 sshd      24188            root    3u  IPv4 171444      0t0  TCP *:ssh (LISTEN)
 sshd      24188            root    4u  IPv6 171446      0t0  TCP *:ssh (LISTEN)
+cupsd     27069            root    6u  IPv6 232881      0t0  TCP ip6-localhost:ipp (LISTEN)
+cupsd     27069            root    7u  IPv4 232882      0t0  TCP localhost:ipp (LISTEN)
 ```
 
-### A note about port numbers and service IDs
-
-You might have noticed that, by default, `netstat` says that my `sshd` server is bound to all local IP addresses for the `ssh` service. That looks like this in the `netstat` output:
-
-```bash
-    tcp        0      0 0.0.0.0:ssh             0.0.0.0:*               LISTEN      24188/sshd: /usr/sb
-```
-
-However, when I use the --numeric parameter with `netstat`, `ssh` is replaced with the number `22` so that the output looks like this:
-
-```bash
-    tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      24188/sshd: /usr/sb 
-```
-
-Read on for more information about these service names and numbers.
+>SIdebar: Port Numbers and Names
+>
+>By default, programs like `netstat` and `lsof` use names like `ssh` instead of numbers like `22` to identify ports. For example, `sshd` looks something like this in default `netstat` output:
+>
+>You might have noticed that, by default, `netstat` says that my `sshd` server is bound to all local IP addresses for the `ssh` service. That looks like this in the `netstat` output:
+>
+>```bash
+>    tcp        0      0 0.0.0.0:ssh             0.0.0.0:*               LISTEN      24188/sshd: /usr/sbin/sshd
+>```
+>
+>However, when I use the --numeric parameter with `netstat`, `ssh` is replaced with the number `22` so that the output looks like this:
+>
+>```bash
+>    tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      24188/sshd: /usr/sbin/sshd
+>```
+>
+>Read on for more information about these service names and numbers.
 
 ## Ways to tell what other services are listening for connections on your computer
 
-If you want to discover the default use of a particular port, or the port typically assigned to a service, these port mappings are stored in a file called `/etc/services`. This is just for reference. If `/etc/services` says that SSH is usually run on TCP port 22, but you look at `netstat` output and find an instance of `sshd` running on port 13222, then your your computer, you have `sshd` running on port 13222. In other words, `/etc/services` is not binding. It is just an FYI reference. However, I believe it is where `netstat` and other programs get the labels they use when describing ports.
-
-You can even use `grep` to search `/etc/services` for specific service names or port numbers. I am going to make use of one more special character in `grep`:
-    - The two characters `\b` together make up another "anchor." This one means that the anchor has to be at a word boundary for the match to succeed. Putting `\b` both before and after the thing you want to find is roughly equivalent to using the "whole words only" option in a word processor's search function. Seeing how it works might help.
-
-
-If I search /etc/services for the string "22", I get back the row for `ssh`, which is what I wanted, but I also get back some false positives.
+The default port assignments of "well-known" ports are stored in a file named `/etc/services`. For example, if you use the search utility `grep` to look in this file for the string `ssh`, you get this result:
 
 ```bash
-christopherl@shellsburg:~$ grep 22 /etc/services
-
-ssh		22/tcp				# SSH Remote Login Protocol
-xmpp-client	5222/tcp	jabber-client	# Jabber Client Connection
-dcap		22125/tcp			# dCache Access Protocol
-gsidcap		22128/tcp			# GSI dCache Access Protocol
-wnn6		22273/tcp			# wnn6
+grep ssh /etc/services 
+ssh      22/tcp          # SSH Remote Login Protocol
 ```
 
-However, I can search for "22" as a complete word only, if I say that the first and last character of it both have to be at a word boundary.
+This tells you that the default usage of TCP port 22 is reserved for SSH. This file is informational only. There is no enforcement of the information in this file. There is nothing stopping another service from using TCP port 22 if it wants to, for example. I believe that this file is where `netstat` and other programs get the labels they use when describing ports.
+
+You can use `grep` to search `/etc/services` for specific service names or port numbers. This is a good way to try to identify processes that are listening on other ports. Recall the output we received from `netstat` earlier
 
 ```bash
-christopherl@shellsburg:~$ grep -E '\b22\b' /etc/services
-
-ssh		22/tcp				# SSH Remote Login Protocol
-```
-
-This means that if you see a program listening for connections on your computer and you're not sure what it is, one way to check is by looking in `/etc/services`. Consider this output from `lsof` on my laptop.
-
-> I'm using a couple of extra features of `grep`'s search. I won't explain every one because that would take a lot of time. I can go over it in class or before class if anybody wants to come in. If you want to teach yourself how to do this, the language that `grep` uses to express search conditions is called *regular expressions*, and I learned it by using the tutorials available at regular-expressions.info.
-
-```bash
-christopherl@shellsburg:~ $ sudo lsof -i -nP | grep -E '(LISTEN\)$|^COMMAND)'
-
-COMMAND     PID            USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
-systemd-r   478 systemd-resolve   14u  IPv4  17151      0t0  TCP 127.0.0.53:53 (LISTEN)
-cupsd      5279            root    6u  IPv6  64097      0t0  TCP [::1]:631 (LISTEN)
-cupsd      5279            root    7u  IPv4  64098      0t0  TCP 127.0.0.1:631 (LISTEN)
-sshd      24188            root    3u  IPv4 171444      0t0  TCP *:22 (LISTEN)
-sshd      24188            root    4u  IPv6 171446      0t0  TCP *:22 (LISTEN)
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      24188/sshd: /usr/sb 
+tcp        0      0 localhost:631           0.0.0.0:*               LISTEN      27069/cupsd         
+tcp        0      0 localhost:53            0.0.0.0:*               LISTEN      478/systemd-resolve 
+tcp6       0      0 ip6-localhost:631       [::]:*                  LISTEN      27069/cupsd         
+tcp6       0      0 [::]:22                 [::]:*                  LISTEN      24188/sshd: /usr/sb  
 ```
 
 We already know that port 22 is `ssh` from earlier discussions. But what are ports 53 and 631? Are those processes I want my computer to be running?
 
-Let's check whether those ports are listed in `/etc/services` and what their names are if they are listed there. I'll use the "alternative" syntax (`(this|or|that)`) so that I only have to run grep once, and I'll also use the `\bWordBoundaryMarkers\b` so that we don't get false positives.
+Let's check whether those ports are listed in `/etc/services` and what their names are if they are listed there. I'm going to use a little bit of advanced search syntax, telling `grep` to search using the pattern `\b(631|53)\b`. In English, the means that it's looking for the strings "631" or "53", but they have to be whole words, meaning that strings like "10631" or "53abc" won't match.
 
 ```bash
-christopherl@shellsburg:/proc/24188/net$ grep -E '\b(631|53)\b' /etc/services
-domain      53/tcp          # Domain Name Server
+grep -E '\b(631|53)\b' /etc/services
+domain      53/tcp          Domain Name Server
 domain      53/udp
-ipp         631/tcp         # Internet Printing Protocol
+ipp         631/tcp         Internet Printing Protocol
 ```
 
 Port 53 is reserved for DNS, the Domain Name System, on both UDP and TCP. Both `netstat` and `lsof` have reported that process ID (PID) 478 owns this port. I can use `ps` (process status) to look at PID 478. If I do, I see this.
@@ -283,7 +182,7 @@ Port 53 is reserved for DNS, the Domain Name System, on both UDP and TCP. Both `
 `ps` parameters used
 
 - The -f parameter makes `ps` use "full" (wide) output, displaying more information.
-- The -p parameter makes `ps` only display information for the process ID it is given. 
+- The -p parameter makes `ps` only display information for the process ID it is given.
 
 ```bash
 christopherl@shellsburg:/proc/24188/net$ ps -f -p 478
@@ -292,7 +191,7 @@ UID          PID    PPID  C STIME TTY          TIME CMD
 systemd+     478       1  0 08:45 ?        00:00:00 /lib/systemd/systemd-resolved
 ```
 
-These results from `ps` look like this could be a service (notice the **d** at the end of the process name?). Let's see if **systemctl** knows about this process. 
+These results from `ps` look like this could be a service (notice the **d** at the end of the process name?). Let's see if **systemctl** knows about this process.
 
 When I typed the command below, I typed something like `systemctl status systemd-r` and then hit tab. When this didn't autocomplete, I hit tab twice, to see what the options were. That tab key is your friend.
 
@@ -319,9 +218,11 @@ So yep, that looks like a DNS-related service. They even put URLs in there for m
 
 Here's a question that might be very hard for you at this point in your learning. I will try to remember it for our next meeting but I'm not sure I will. It's nice to be able to pull up all of this information, but *how do we know we're not just looking at very convincing malware* that just looks a lot like a service that it's impersonating?
 
-## How to make very wise cows
+## How to make Very Wise Cows(TM)
 
-You get this one with no explanation at all.
+Now we began to get a little hands-on experience installing programs. Why start with practical ones when we can make Very Wise Cows(TM) before Elon Musk invents them?
+
+The `fortune` command spews out bits of time-tested wisdom, much like fortune cookies. In other words, don't trust anything it tells you. Run the following
 
 ```bash
 sudo apt update
@@ -331,24 +232,206 @@ fortune
 fortune
 fortune
 fortune
-# heh
-for i in $(cat )
+heh
+```
+
+The `cowsay` command lets you make cows say things. This clearly protects your anonymity, since nobody will suspect that the text you entered on your workstation could possibly have come from you if a cow is clearly the one saying it.
+
+```bash
 sudo apt install cowsay
-cowsay hello, world!
-# that's lame ^
-# but this is kinda fun:
+cowsay $USER did not tell me to say anything
+echo I am a sentient cow | cowsay 
 fortune | cowsay
-# thursday we looked at a way to loop over the whole list 
-# of possible animals that cowsay can use. i think this 
-# way is more fun. if we write the list to a file first
-# there are a few other things we can do later. it's
-# easier to show than to explain. there are going to be
-# a couple of things in here we haven't discussed. we 
-# can discuss these in Slack or on the Thursday after
-# Thanksgiving.
-tmpfile=$(mktemp)
-cowsay -l | tail --lines=+2 | tr ' ' '\n' > $tmpfile
-for animal in $(cat $tmpfile); do
-    
+```
+
+>**Sidebar: Pipelineing**
+>
+>The last two lines above use something called [pipelines](https://www.gnu.org/software/bash/manual/bash.html#Pipelines). A pipeline has two or more commands separated by vertical pipes. From left to right, each command is run, and the output of each command is sent to the following command as input. In the example about the sentient cow, the `echo` command just outputs whatever you tell it to. I know - not the most exciting command in the world. So in this case, it outputs "I am a sentient cow" but instead of displaying that on your terminal, as it normally would, it "pipes" that output to `cowsay`. `cowsay` has been written so that if it receives input in this manner, then the cow will use that as its text.
+>
+>The last line, the one that runs `fortune`, does the same thing, but instead of you hard-coding a message that `echo` will pass to `cowsay`, you use the `fortune` command to generate the text for the cow to say, thus producing a Very Wise Cow(TM).
+>
+>For what it's worth, this is also the line that really convinces people that the cow is the one doing all the thinking. There's no way I'd come up with such elegant sayings, and all my friends and family know it. I've had to dissuade them more than once from forming The Church of Unworthy Scripters in Service of the Wise Order of Cows(TM). I usually do this by pointing out that this could be abbreviated as The Cussword Cows. They really don't like that, as it is clearly blasphemous, so the conversation typically ends there.
+
+You can also specify different pictures to use instead of the Very Wise Cow(TM). This would probably cause The Cussword Cows to form splinter groups and have factional disputes and argue over how many `cowsay` avatars can dance in a Thunderbolt port or something.
+
+To list the "animals" that are available, use the `-l` parameter, and to use a different animal, use `-f` (for cowFile). There are a few other parameters. As always, Google or `man cowsay` is how you find this info.
+
+If for some reason you wanted to use `cowsay` with all of its animals except `stimpy`, because you love `ren` and think `stimpy` is always stealing the spotlight, this is one way you could do that.
+
+```bash
+for animal in $(cowsay -l | tail +2); do
+    if [[ "$animal" == "stimpy" ]]; then
+        echo "$animal" is a showboat
+    else
+        fortune | cowsay -f "$animal"
+    fi
+done
+```
+
+If you want to gain insight into how and why this works, the way to do that is to run the commands individually, building up the complete `for` loop from its various parts.
+
+Let's start with the first line. The first part that has to be run is the part inside the parentheses, just like in math.
+
+The pattern `command2 $(command1)` is very similar to the pattern `command1 | command2`. In both cases, `command1` is run, and its output is passed to `command2`. What is different is that with the `$(...)` syntax, the output goes exactly where you tell it to go, instead of being piped to the `command2` and assuming that `command2` will know what to do with it. In this case, we are explicitly putting the output of `cowsay -l | tail +2` immediately after the `in` keyword on line 2.
+
+That's a lot of words. Let's look at how this works. Please follow along in your terminal.
+
+Too see all the animals that `cowsay` can use:
+
+```bash
+this produces a list of all of the animals `cowsay` knows about:
+cowsay -l
+Cow files in /usr/share/cowsay/cows:
+apt bud-frogs bunny calvin cheese cock cower daemon default dragon
+dragon-and-cow duck elephant elephant-in-snake eyes flaming-sheep fox
+ghostbusters gnu hellokitty kangaroo kiss koala kosh luke-koala
+mech-and-cow milk moofasa moose pony pony-smaller ren sheep skeleton
+snowman stegosaurus stimpy suse three-eyes turkey turtle tux unipony
+unipony-smaller vader vader-koala www
+```
+
+We have no use for the first line of output - the one that says, "Cow files in /usr/share/cowsay/cows:". We can use the `tail` command to skip the first line. Run `man tail` to see why this works.
+
+```bash
+cowsay -l | tail --lines=+2
+apt bud-frogs bunny calvin cheese cock cower daemon default dragon
+dragon-and-cow duck elephant elephant-in-snake eyes flaming-sheep fox
+ghostbusters gnu hellokitty kangaroo kiss koala kosh luke-koala
+mech-and-cow milk moofasa moose pony pony-smaller ren sheep skeleton
+snowman stegosaurus stimpy suse three-eyes turkey turtle tux unipony
+unipony-smaller vader vader-koala www
+```
+
+So far, so good. We now have a list of all of the `cowsay` animals. Now we just need to find a way to look at the names, one at a time, so that we can tell whether the current one is `stimpy` or not.
+
+The bash shell has a built-in `for` loop that lets us do this easily. For example, the following loop creates a variable named $person that is given the students' three names, and then simply displays them by using the `echo` command.
+
+```bash
+for person in Anna Michael Tristan; do
+    echo "$person"
 done
 
+Anna
+Michael
+Tristan
+
+You can do anything you want with a for-loop variable. For example, you can use this variable to make the `cowsay` messages more personalized. It's very convincing.
+
+for person in Anna Michael Tristan; do
+    echo "$person, " $(fortune) | cowsay
+done
+
+ _________________________________________
+/ Anna, Q: What do you get when you cross \
+| the Godfather with an attorney? A: An   |
+\ offer you can't understand.             /
+ -----------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+            
+ ________________________________________
+/ Michael, Your life would be very empty \
+\ if you had nothing to regret.          /
+ ----------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+  ________________________________________
+/ Tristan, Chicken Little only has to be \
+\ right once.                            /
+ ----------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+```
+
+In our case, for each time our $animal variable changes, we want to test if its value is "stimpy" or not. The `bash` shell gives us an easy way to do this also, by providing an `if` statement. there are many things an `if` statement can check, but the most common checks are to see whether two values are equal That is exactly what we want to do.
+
+```bash
+for animal in ren stimpy; do
+    if [[ "$animal" == "stimpy" ]]; then
+        echo "$animal is a showboat."
+    else
+        echo "We like "$animal" a lot, even if we are not sure why."
+    fi
+done
+
+We like ren a lot, even if we are not sure why.
+stimpy is a showboat.
+```
+
+If all of these little pieces make sense to you, then you have all the concepts down to understand our original for loop also. If some things aren't making sense just yet, that's OK. Keep studying examples as you have time and keep asking questions. The amount you get better each year depends on the amount of time you put in, being both eager and humble enough to ask the team for help when you need it, and having fun :) .
+
+Here's that original `for` loop:
+
+```bash
+for animal in $(cowsay -l | tail +2); do
+    if [[ "$animal" == "stimpy" ]]; then
+        echo "$animal" is a showboat.
+    else
+        fortune | cowsay -f "$animal"
+    fi;
+done
+```
+
+And now that you've read all of this, here is a concise explanation of how it works.
+
+| section or keyword | function |
+|-------|--------|
+| **for** | Introduces the for loop. |
+| **animal** | The name of your for-loop variable. note that when you create or set a variable in bash, you do not use a dollar sign at the beginning of its name. when you read its value, you do. |
+| **in** | Introduces the command or list from which you will get values for your for-loop variable. |
+| $(...) | Whatever is in this location creates the values that the for-loop variable will iterate over. It does **not** have to be in the form `$(...)` - it can be any valid expression that returns a list of values. |
+| **do** | This marks the end of the loop header and means that the loop body follows. |
+| **loop body** | Everything between the keywords **do** and **done** are the loop body. Each time there is a new value for the for-loop variable, the loop body executes for that new value. In this particular case, the loop body is an `if` statement that determines whether the $animal variable is equal to "stimpy" and responds accordingly.
+| **done** | This means the loop is complete. At this point, the loop tries to get another value for the for-loop variable. If it can get a new value, it performs whatever logic is inside the loop again. if there are no more values available for the for-loop variable, the loop terminates. |
+
+>**Sidebar: Code of Conduct in Open-Source Software**
+>At our meeting, I was concerned about one of the "animals" on the list, but as Dan reassured me, it turned out to be a chicken. Lest you think I'm just a paranoid old man, let me tell you why I think this.
+>
+>The Linux development community has had its share of dysfunction, especially in the past. Its founder, Linux Torvalds, was one of the well-known offenders. He treated people poorly for various reasons, such as letting them know if he thought their ideas were stupid. During this time, `cowsay` and a number of other programs did, in fact, have offensive material in them.
+>
+>A few years ago, and strong push was made to include a Code of Conduct in the Linux project. Unsurprisingly, some folks were upset about this, thinking silly things like somehow being nice to each other would mean that the project would have to accept bad code. I guess some people don't actually know how to tell somebody else that their code isn't ready to be accepted or that their feature request won't be implemented without insulting them.
+>
+>Anyway, the code of conduct was adopted; Linus has to be nicer now; and the offensive content from programs like `cowsay` and `fortune` has apparently been removed.
+
+## Homework
+
+If you have the time and you'd like to try something new that will reinforce a lot of things in this document, here are some homework ideas. Do as many of these as you have time for. Please ask questions in either #homework or @safe_place if you need help so that the team can get used to helping each other. This will be important for the competition.
+
+### Background
+
+There is a file called `/etc/passwd` that contains one line for each user on an Ubuntu computer. The file format might look strange at first, but it is really a bunch of fields separate by colons. Here's the entry for my user account on one of my VMs:
+
+```bash
+christopherl:x:1000:1000:christopherl,,,:/home/christopherl:/bin/bash
+```
+
+The first field is my username, `christopherl`. The second field, `x`, is there for historical purposes, but basically means that the hash for my password is not stored here. There are some other fields that have to do with my user ID, group ID, and group name, but then I want to call attention to the last two fields. `/home/christopherl` is my home directory, and `/bin/bash` is my default shell, meaning that if I log onto this computer, unless another shell is specified specifically, I will be given a bash shell by default.
+
+Here are some things I'd like you to try to do with `/etc/passwd`. For each question, I will give you the name(s) of shell commands that you could use to do the task. To learn how to use these commands, use Google or `man`.
+
+### Tasks
+
+1. How many users are listed in `/etc/passwd`? Don't count them yourself; use bash to count them for you.
+   1. You may assume: every line in `/etc/passwd` corresponds to 1 unique user
+   2. Things that could help: the `wc` command
+
+2. Can you run a command that will cause `bash` to print only the line for the user `whoopsie`?
+   1. Things that could help: `grep`
+
+3. How many users have `/bin/false` listed as their default shell?
+   1. Things that could help: `grep` and `wc`, used together (think pipelines)
+   2. FYI: the default shell is the 7th field for each line in `/etc/passwd`. I'm not saying you need to use this information, but if you want a 100% certain answer, it might be ueeful.
+      1. Given this comment, other things that might be useful include `sed` and `awk`, but those are overkill, and I'd just use `cut`. I don't expect anybody to figure out anything I'm saying about field number 7. :)
+4. What is your home directory? Can you get `bash` to display it by itself, without the rest of the line from `/etc/passwd`? For example, if it was me, I'd want the result to just say `/home/christopherl` but not to have any of the other parts of the line.
+   1. Things that could help: `grep` and `cut`. You will want to pay attention to the `-t` parameter of `cut`.

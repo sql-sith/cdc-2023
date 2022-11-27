@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>2022-11-17-meeting-notes.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<p>IT Club Cyber Defense Meeting Notes</p>
+<table>
+<thead>
+<tr>
+<th>17-November-2022</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Location:</td>
+<td>GoDaddy Hiawatha Roasters Conference Room</td>
+</tr>
+<tr>
+<td>Present:</td>
+<td>Anna, Melissa, Michael, Dan</td>
+</tr>
+<tr>
+<td>Missing:</td>
+<td>Tristan (robotics meet)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><a href="#it-club-cyber-defense-meeting-notes">IT Club Cyber Defense Meeting Notes</a>
+<ul>
+<li><a href="#summary-of-ssh">Summary of <code>ssh</code></a>
+<ul>
+<li><a href="#how-to-install-openssh-server">How to install <strong>OpenSSH Server</strong></a></li>
+</ul>
+</li>
+<li><a href="#ways-to-tell-if-ssh-is-listening-for-connections-on-your-computer">Ways to tell if <code>ssh</code> is listening for connections on your computer</a>
+<ul>
+<li><a href="#using-systemctl">Using <code>systemctl</code></a></li>
+<li><a href="#using-netstat">Using <code>netstat</code></a></li>
+<li><a href="#using-lsof">Using <code>lsof</code></a></li>
+</ul>
+</li>
+<li><a href="#ways-to-tell-what-other-services-are-listening-for-connections-on-your-computer">Ways to tell what other services are listening for connections on your computer</a></li>
+<li><a href="#how-to-make-very-wise-cowstm">How to make Very Wise Cows(TM)</a></li>
+<li><a href="#-offer-you-cant-understand-------------">\ offer you can't understand.             /</a></li>
+<li><a href="#-if-you-had-nothing-to-regret----------">\ if you had nothing to regret.          /</a></li>
+<li><a href="#-right-once----------------------------">\ right once.                            /</a></li>
+</ul>
+</li>
+<li><a href="#if-all-of-these-little-pieces-make-sense-to-you-then-the-way-that">if all of these little pieces make sense to you, then the way that</a></li>
+<li><a href="#our-for-loop-ran-cowsay-commands-for-all-the-animals-should-make">our for loop ran <code>cowsay</code> commands for all the animals should make</a></li>
+<li><a href="#sense-to-you-too-if-it-doesnt-completely-make-sense-hopefully">sense to you, too. if it doesn't completely make sense, hopefully</a></li>
+<li><a href="#it-is-at-least-starting-to">it is at least starting to.</a></li>
+<li><a href="#here-are-the-main-parts-of-the-for-loop-itself">here are the main parts of the for loop itself:</a></li>
+<li><a href="#"></a></li>
+<li><a href="#for----introduces-the-for-loop">for:    introduces the for loop</a></li>
+<li><a href="#animal-the-name-of-your-for-loop-variable-note-that-when-you-create">animal: the name of your for-loop variable. note that when you create</a></li>
+<li><a href="#or-set-a-variable-in-bash-you-do-not-use-a-dollar-sign-at">or set a variable in bash, you do not use a dollar sign at</a></li>
+<li><a href="#the-beginning-of-its-name-when-you-read-its-value-you-do">the beginning of its name. when you read its value, you do.</a></li>
+<li><a href="#in-----introduces-the-command-or-list-from-which-you-will-get-values">in:     introduces the command or list from which you will get values</a></li>
+<li><a href="#for-your-for-loop-variable">for your for-loop variable.</a></li>
+<li><a href="#-the-command-that-creates-values-for-your-for-loop-variable">$(...): the command that creates values for your for-loop variable.</a></li>
+<li><a href="#do-----this-just-means-its-time-to-run-the-loop">do:     this just means it's time to run the loop</a></li>
+<li><a href="#done---this-means-the-loop-is-complete-at-this-point-the-loop-tries">done:   this means the loop is complete. at this point, the loop tries</a></li>
+<li><a href="#to-get-another-value-for-the-for-loop-variable-if-it-can-get">to get another value for the for-loop variable. if it can get</a></li>
+<li><a href="#a-new-value-it-performs-whatever-logic-is-inside-the-loop">a new value, it performs whatever logic is inside the loop</a></li>
+<li><a href="#again-if-there-are-no-more-values-available-for-the-for-loop">again. if there are no more values available for the for-loop</a></li>
+<li><a href="#variable-the-loop-terminates">variable, the loop terminates.</a></li>
+<li><a href="#-1"></a></li>
+<li><a href="#inside-the-for-loop-is-an-if-statement-that-just-decides-whether">inside the for loop is an <code>if</code> statement that just decides whether</a></li>
+<li><a href="#we-will-run-fortune-and-cowsay-or-call-stimpy-a-showboat">we will run <code>fortune</code> and <code>cowsay</code> or call stimpy a showboat.</a></li>
+</ul>
+<h2 id="summary-of-ssh">Summary of <code>ssh</code></h2>
+<p><code>ssh</code> is short for <strong>secure shell</strong>, and it has both server and client components.</p>
+<p>There are many <code>ssh</code> implementations. We used one of the most popular, called <strong>OpenSSH</strong>. The package we installed for the server component is called <strong>OpenSSH Server</strong>, and the server process that it runs is called <code>sshd</code>, for <strong>ssh daemon</strong>.</p>
+<p><code>OpenSSH Server</code> also happens to install the <code>ssh</code> client program, which is simply called <code>ssh</code>. You run <code>ssh</code> when you want to connect to another computer that is running <code>sshd</code>. If that server's administrator has given you permission to connect to it using <code>ssh</code>, then you will be able to use a terminal connected to that other computer, which we call a remote computer.</p>
+<p>In this scenario, your computer, running <code>ssh</code>, is the client, because it initiates the &quot;conversation&quot; between the two computers by sending a connection request to the other computer. The other computer, running <code>sshd</code>, is the server, because it is listening for these requests, and responds when it receives one.</p>
+<h3 id="how-to-install-openssh-server">How to install <strong>OpenSSH Server</strong></h3>
+<pre class="hljs"><code><div><span class="hljs-keyword">if</span> you have not recently updated apt<span class="hljs-string">'s
+software catalog, do this first:
+sudo apt update
+
+sudo apt install openssh-server
+</span></div></code></pre>
+<p>That's it - one command will install the SSH Server for us. As mentioned before, installing the OpenSSH Server also installs the <code>ssh</code> client automatically.</p>
+<p>If you are on a computer and you only want to install the client, you should install the package named <code>openssh-client</code>. It will install <code>ssh</code> but not <code>sshd</code>.</p>
+<h2 id="ways-to-tell-if-ssh-is-listening-for-connections-on-your-computer">Ways to tell if <code>ssh</code> is listening for connections on your computer</h2>
+<p>There are several ways to determine if a service like <code>sshd</code> is running on your computer. This section will recap how to do this with <code>systemctl</code>, <code>netstat</code>, and <code>lsof</code>.</p>
+<h3 id="using-systemctl">Using <code>systemctl</code></h3>
+<p>The most basic way to check for a running service on Ubuntu is to use <code>systemctl</code>. If you know the name of a service, you can get its status from <code>systemctl</code>. You can see in the output below that the <code>sshd</code> service is active. The log output at the bottom says it is listening on port 22.</p>
+<pre class="hljs"><code><div>christopherl@shellsburg:~$ systemctl status sshd
+● ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
+     Active: active (running) since Sun 2022-11-20 19:33:29 CST; 5 days ago
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+    Process: 24187 ExecStartPre=/usr/sbin/sshd -t (code=exited, status=0/SUCCESS)
+   Main PID: 24188 (sshd)
+      Tasks: 1 (<span class="hljs-built_in">limit</span>: 4626)
+     Memory: 2.6M
+        CPU: 15ms
+     CGroup: /system.slice/ssh.service
+             └─24188 <span class="hljs-string">"sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups"</span>
+
+Nov 20 19:33:29 shellsburg systemd[1]: Starting OpenBSD Secure Shell server...
+Nov 20 19:33:29 shellsburg sshd[24188]: Server listening on 0.0.0.0 port 22.
+Nov 20 19:33:29 shellsburg sshd[24188]: Server listening on :: port 22.
+Nov 20 19:33:29 shellsburg systemd[1]: Started OpenBSD Secure Shell server.
+</div></code></pre>
+<h3 id="using-netstat">Using <code>netstat</code></h3>
+<p>One of the tools IT professionals rely heavily on for checking port usage is <code>netstat</code>. It can tell you the status of every network connection currently open on your computer as well as every listener that is waiting for network requests. We will use <code>netstat</code> to see if any program is listening for network requests on TCP port 22, which is SSH's default listener port.</p>
+<blockquote>
+<p><strong>Sidebar: TCP vs UDP</strong></p>
+<p>We briefly discussed some differences between TCP and UDP, which are two of the main protocols in the IP protocol suite.</p>
+<p>TCP is connection-oriented, so it emphasizes things like having all of the data arrive in the same order it was sent, and keeping the connection between both computers open, much like a phone call.</p>
+<p>UDP is not connection oriented. It doesn't care about the order in which the recipient receives the packets at all. Each packet might get routed separately, with different delays in arrival.</p>
+<p>It's a big topic. Google for more info, or come to office hours! If we have them.</p>
+<hr/>
+<p><strong>Sidebar: Ports</strong></p>
+<p>To know which services are supposed to receive which network packets, port numbers are used. They are just another number that gives a network destination that is more specific than an IP address. You could think of this like an apartment building: the IP address of a computer is like the address of an apartment building, and a port number is like the apartment number.</p>
+</blockquote>
+<p>The <code>netstat</code> program may not be installed on your computer. If not, you should be able to install it on versions 20.04 LTS or 22.04 LTS of Ubuntu by running <code>sudo apt install net-tools</code>.</p>
+<p>After you have <code>netstat</code> installed, you can use it to list all tcp ports that have processes attached to them that are listening for network requests. You can even have <code>netstat</code> tell you what process is listening on each port (you have to use <code>root</code> permissions to do this, which is why the following command starts with <code>sudo</code>).</p>
+<pre><code>```bash
+christopherl@shellsburg:~$ sudo netstat --tcp --listening --programs --numeric-ports
+</code></pre>
+<p>Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name<br>
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      24188/sshd: /usr/sb
+tcp        0      0 localhost:631           0.0.0.0:*               LISTEN      27069/cupsd<br>
+tcp        0      0 localhost:53            0.0.0.0:*               LISTEN      478/systemd-resolve
+tcp6       0      0 ip6-localhost:631       [::]<img class="emoji" alt="kissing" src="data:image/png;base64,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" />                  LISTEN      27069/cupsd<br>
+tcp6       0      0 [::]:22                 [::]<img class="emoji" alt="kissing" src="data:image/png;base64,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" />                  LISTEN      24188/sshd: /usr/sb<br>
+```</p>
+<p>You can see in the output that process <code>24188/sshd</code> is listening on port 22, which is the default ssh port. The local <code>tcp</code> address of <code>0.0.0.0</code>means that <code>sshd</code> is listening on every TCPv4 address that the computer is connected to. Similarly, the <code>tcp6</code> address of <code>[::]:</code> means that <code>sshd</code> is listening on every TCPv6 address that the computer is attached to. Long story short, this computer will take <code>ssh</code> connections from any available network connection.</p>
+<h3 id="using-lsof">Using <code>lsof</code></h3>
+<p>I want to also briefly mention the program <code>lsof</code> which can show you lists of open files. That might not sound overly impressive until you learn that almost everything in Linux has a representation as a file somewhere, so this goes beyond normal files. In this case, we can ask <code>lsof</code> to show us listening <code>tcp</code> ports and it will give us the same information <code>netstat</code> did. Again, you need to use <code>sudo</code> for this.</p>
+<pre class="hljs"><code><div>christopherl@shellsburg:~$ sudo lsof -iTCP -sTCP:LISTEN
+
+COMMAND     PID            USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+systemd-r   478 systemd-resolve   14u  IPv4  17151      0t0  TCP localhost:domain (LISTEN)
+sshd      24188            root    3u  IPv4 171444      0t0  TCP *:ssh (LISTEN)
+sshd      24188            root    4u  IPv6 171446      0t0  TCP *:ssh (LISTEN)
+cupsd     27069            root    6u  IPv6 232881      0t0  TCP ip6-localhost:ipp (LISTEN)
+cupsd     27069            root    7u  IPv4 232882      0t0  TCP localhost:ipp (LISTEN)
+</div></code></pre>
+<blockquote>
+<p>SIdebar: Port Numbers and Names</p>
+<p>By default, programs like <code>netstat</code> and <code>lsof</code> use names like <code>ssh</code> instead of numbers like <code>22</code> to identify ports. For example, <code>sshd</code> looks something like this in default <code>netstat</code> output:</p>
+<p>You might have noticed that, by default, <code>netstat</code> says that my <code>sshd</code> server is bound to all local IP addresses for the <code>ssh</code> service. That looks like this in the <code>netstat</code> output:</p>
+<pre class="hljs"><code><div>   tcp        0      0 0.0.0.0:ssh             0.0.0.0:*               LISTEN      24188/sshd: /usr/sbin/sshd
+</div></code></pre>
+<p>However, when I use the --numeric parameter with <code>netstat</code>, <code>ssh</code> is replaced with the number <code>22</code> so that the output looks like this:</p>
+<pre class="hljs"><code><div>   tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      24188/sshd: /usr/sbin/sshd
+</div></code></pre>
+<p>Read on for more information about these service names and numbers.</p>
+</blockquote>
+<h2 id="ways-to-tell-what-other-services-are-listening-for-connections-on-your-computer">Ways to tell what other services are listening for connections on your computer</h2>
+<p>The default port assignments of &quot;well-known&quot; ports are stored in a file named <code>/etc/services</code>. For example, if you use the search utility <code>grep</code> to look in this file for the string <code>ssh</code>, you get this result:</p>
+<pre class="hljs"><code><div>grep ssh /etc/services 
+ssh		22/tcp				<span class="hljs-comment"># SSH Remote Login Protocol</span>
+</div></code></pre>
+<p>This tells you that the default usage of TCP port 22 is reserved for SSH. This file is informational only. There is no enforcement of the information in this file. There is nothing stopping another service from using TCP port 22 if it wants to, for example. I believe that this file is where <code>netstat</code> and other programs get the labels they use when describing ports.</p>
+<p>You can use <code>grep</code> to search <code>/etc/services</code> for specific service names or port numbers. This is a good way to try to identify processes that are listening on other ports. Recall the output we received from <code>netstat</code> earlier</p>
+<pre class="hljs"><code><div>Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      24188/sshd: /usr/sb 
+tcp        0      0 localhost:631           0.0.0.0:*               LISTEN      27069/cupsd         
+tcp        0      0 localhost:53            0.0.0.0:*               LISTEN      478/systemd-resolve 
+tcp6       0      0 ip6-localhost:631       [::]:*                  LISTEN      27069/cupsd         
+tcp6       0      0 [::]:22                 [::]:*                  LISTEN      24188/sshd: /usr/sb  
+</div></code></pre>
+<p>We already know that port 22 is <code>ssh</code> from earlier discussions. But what are ports 53 and 631? Are those processes I want my computer to be running?</p>
+<p>Let's check whether those ports are listed in <code>/etc/services</code> and what their names are if they are listed there. I'm going to use a little bit of advanced search syntax, telling <code>grep</code> to search using the pattern <code>\b(631|53)\b</code>. In English, the means that it's looking for the strings &quot;631&quot; or &quot;53&quot;, but they have to be whole words, meaning that strings like &quot;10631&quot; or &quot;53abc&quot; won't match.</p>
+<pre class="hljs"><code><div>grep -E <span class="hljs-string">'\b(631|53)\b'</span> /etc/services
+domain      53/tcp          Domain Name Server
+domain      53/udp
+ipp         631/tcp         Internet Printing Protocol
+</div></code></pre>
+<p>Port 53 is reserved for DNS, the Domain Name System, on both UDP and TCP. Both <code>netstat</code> and <code>lsof</code> have reported that process ID (PID) 478 owns this port. I can use <code>ps</code> (process status) to look at PID 478. If I do, I see this.</p>
+<p><code>ps</code> parameters used</p>
+<ul>
+<li>The -f parameter makes <code>ps</code> use &quot;full&quot; (wide) output, displaying more information.</li>
+<li>The -p parameter makes <code>ps</code> only display information for the process ID it is given.</li>
+</ul>
+<pre class="hljs"><code><div>christopherl@shellsburg:/proc/24188/net$ ps -f -p 478
+
+UID          PID    PPID  C STIME TTY          TIME CMD
+systemd+     478       1  0 08:45 ?        00:00:00 /lib/systemd/systemd-resolved
+</div></code></pre>
+<p>These results from <code>ps</code> look like this could be a service (notice the <strong>d</strong> at the end of the process name?). Let's see if <strong>systemctl</strong> knows about this process.</p>
+<p>When I typed the command below, I typed something like <code>systemctl status systemd-r</code> and then hit tab. When this didn't autocomplete, I hit tab twice, to see what the options were. That tab key is your friend.</p>
+<pre class="hljs"><code><div>christopherl@shellsburg:/proc/24188/net$ systemctl status systemd-resolved.service 
+● systemd-resolved.service - Network Name Resolution
+     Loaded: loaded (/lib/systemd/system/systemd-resolved.service; enabled; vendor preset: enabled)
+     Active: active (running) since Thu 2022-11-17 19:33:06 CST; 3 days ago
+       Docs: man:systemd-resolved.service(8)
+             man:org.freedesktop.resolve1(5)
+             https://www.freedesktop.org/wiki/Software/systemd/writing-network-configuration-managers
+             https://www.freedesktop.org/wiki/Software/systemd/writing-resolver-clients
+
+   Main PID: 478 (systemd-resolve)
+     Status: <span class="hljs-string">"Processing requests..."</span>
+      Tasks: 1 (<span class="hljs-built_in">limit</span>: 4626)
+     Memory: 8.5M
+        CPU: 465ms
+     CGroup: /system.slice/systemd-resolved.service
+             └─478 /lib/systemd/systemd-resolved
+</div></code></pre>
+<p>So yep, that looks like a DNS-related service. They even put URLs in there for me to find out more about their service.</p>
+<p>Here's a question that might be very hard for you at this point in your learning. I will try to remember it for our next meeting but I'm not sure I will. It's nice to be able to pull up all of this information, but <em>how do we know we're not just looking at very convincing malware</em> that just looks a lot like a service that it's impersonating?</p>
+<h2 id="how-to-make-very-wise-cowstm">How to make Very Wise Cows(TM)</h2>
+<p>Now we began to get a little hands-on experience installing programs. Why start with practical ones when we can make Very Wise Cows(TM) before Elon Musk invents them?</p>
+<p>The <code>fortune</code> command spews out bits of time-tested wisdom, much like fortune cookies. In other words, don't trust anything it tells you. Run the following</p>
+<pre class="hljs"><code><div>sudo apt update
+sudo apt install fortune 
+fortune
+fortune
+fortune
+fortune
+fortune
+heh
+</div></code></pre>
+<p>The <code>cowsay</code> command lets you make cows say things. This clearly protects your anonymity, since nobody will suspect that the text you entered on your workstation could possibly have come from you if a cow is clearly the one saying it.</p>
+<pre class="hljs"><code><div>sudo apt install cowsay
+cowsay <span class="hljs-variable">$USER</span> did not tell me to say anything
+<span class="hljs-built_in">echo</span> I am a sentient cow | cowsay 
+fortune | cowsay
+</div></code></pre>
+<blockquote>
+<p><strong>Sidebar: Pipelineing</strong></p>
+<p>The last two lines above use something called <a href="https://www.gnu.org/software/bash/manual/bash.html#Pipelines">pipelines</a>. A pipeline has two or more commands separated by vertical pipes. From left to right, each command is run, and the output of each command is sent to the following command as input. In the example about the sentient cow, the <code>echo</code> command just outputs whatever you tell it to. I know - not the most exciting command in the world. So in this case, it outputs &quot;I am a sentient cow&quot; but instead of displaying that on your terminal, as it normally would, it &quot;pipes&quot; that output to <code>cowsay</code>. <code>cowsay</code> has been written so that if it receives input in this manner, then the cow will use that as its text.</p>
+<p>The last line, the one that runs <code>fortune</code>, does the same thing, but instead of you hard-coding a message that <code>echo</code> will pass to <code>cowsay</code>, you use the <code>fortune</code> command to generate the text for the cow to say, thus producing a Very Wise Cow(TM).</p>
+<p>For what it's worth, this is also the line that really convinces people that the cow is the one doing all the thinking. There's no way I'd come up with such elegant sayings, and all my friends and family know it. I've had to dissuade them more than once from forming The Church of Unworthy Scripters in Service of the Wise Order of Cows(TM). I usually do this by pointing out that this could be abbreviated as The Cussword Cows. They really don't like that, as it is clearly blasphemous, so the conversation typically ends there.</p>
+</blockquote>
+<p>You can also specify different pictures to use instead of the Very Wise Cow(TM). This would probably cause The Cussword Cows to form splinter groups and have factional disputes and argue over how many <code>cowsay</code> avatars can dance in a Thunderbolt port or something.</p>
+<p>To list the &quot;animals&quot; that are available, use the <code>-l</code> parameter, and to use a different animal, use <code>-f</code> (for cowFile). There are a few other parameters. As always, Google or <code>man cowsay</code> is how you find this info.</p>
+<p>If for some reason you wanted to use <code>cowsay</code> with all of its animals except <code>stimpy</code>, because you love <code>ren</code> and think <code>stimpy</code> is always stealing the spotlight, this is one way you could do that.</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">for</span> animal <span class="hljs-keyword">in</span> $(cowsay -l | tail +2); <span class="hljs-keyword">do</span>
+    <span class="hljs-keyword">if</span> [[ <span class="hljs-string">"<span class="hljs-variable">$animal</span>"</span> == <span class="hljs-string">"stimpy"</span> ]]; <span class="hljs-keyword">then</span>
+        <span class="hljs-built_in">echo</span> <span class="hljs-string">"<span class="hljs-variable">$animal</span>"</span> is a showboat
+    <span class="hljs-keyword">else</span>
+        fortune | cowsay -f <span class="hljs-string">"<span class="hljs-variable">$animal</span>"</span>
+    <span class="hljs-keyword">fi</span>
+<span class="hljs-keyword">done</span>
+</div></code></pre>
+<p>If you want to gain insight into how and why this works, the way to do that is to run the commands individually, building up the complete <code>for</code> loop from its various parts.</p>
+<p>Let's start with the first line. The first part that has to be run is the part inside the parentheses, just like in math.</p>
+<p>The pattern <code>command2 $(command1)</code> is very similar to the pattern <code>command1 | command2</code>. In both cases, <code>command1</code> is run, and its output is passed to <code>command2</code>. What is different is that with the <code>$(...)</code> syntax, the output goes exactly where you tell it to go, instead of being piped to the <code>command2</code> and assuming that <code>command2</code> will know what to do with it. In this case, we are explicitly putting the output of <code>cowsay -l | tail +2</code> immediately after the <code>in</code> keyword on line 2.</p>
+<p>That's a lot of words. Let's look at how this works. Please follow along in your terminal.</p>
+<p>Too see all the animals that <code>cowsay</code> can use:</p>
+<pre class="hljs"><code><div>this produces a list of all of the animals `cowsay` knows about:
+cowsay -l
+Cow files <span class="hljs-keyword">in</span> /usr/share/cowsay/cows:
+apt bud-frogs bunny calvin cheese cock cower daemon default dragon
+dragon-and-cow duck elephant elephant-in-snake eyes flaming-sheep fox
+ghostbusters gnu hellokitty kangaroo kiss koala kosh luke-koala
+mech-and-cow milk moofasa moose pony pony-smaller ren sheep skeleton
+snowman stegosaurus stimpy suse three-eyes turkey turtle tux unipony
+unipony-smaller vader vader-koala www
+</div></code></pre>
+<p>We have no use for the first line of output - the one that says, &quot;Cow files in /usr/share/cowsay/cows:&quot;. We can use the <code>tail</code> command to skip the first line. Run <code>man tail</code> to see why this works.</p>
+<pre class="hljs"><code><div>cowsay -l | tail --lines=+2
+apt bud-frogs bunny calvin cheese cock cower daemon default dragon
+dragon-and-cow duck elephant elephant-in-snake eyes flaming-sheep fox
+ghostbusters gnu hellokitty kangaroo kiss koala kosh luke-koala
+mech-and-cow milk moofasa moose pony pony-smaller ren sheep skeleton
+snowman stegosaurus stimpy suse three-eyes turkey turtle tux unipony
+unipony-smaller vader vader-koala www
+</div></code></pre>
+<p>So far, so good. We now have a list of all of the <code>cowsay</code> animals. Now we just need to find a way to look at the names, one at a time, so that we can tell whether the current one is <code>stimpy</code> or not.</p>
+<p>The bash shee has a built-in <code>for</code> loop that lets us do this easily. For example, the following loop creates
+a variable named $person that is given the students' three names, and then simply displays them by using the <code>echo</code> command.</p>
+<p>for person in Anna Michael Tristan; do
+echo &quot;$person&quot;
+done</p>
+<p>Anna
+Michael
+Tristan</p>
+<p>You can do anything you want with a for-loop variable. For example, you can use this variable to make the <code>cowsay</code> messages more personalized. It's very convincing.</p>
+<p>for person in Anna Michael Tristan; do
+echo &quot;$person, &quot; $(fortune) | cowsay
+done</p>
+<hr>
+<h2 id="anna-q-what-do-you-get-when-you-cross--the-godfather-with-an-attorney-a-an--offer-you-cant-understand">/ Anna, Q: What do you get when you cross <br>
+| the Godfather with an attorney? A: An   |
+\ offer you can't understand.             /</h2>
+<pre><code>    \   ^__^
+     \  (oo)\_______
+        (__)\       )\/\
+            ||----w |
+            ||     ||
+</code></pre>
+<hr>
+<h2 id="michael-your-life-would-be-very-empty--if-you-had-nothing-to-regret">/ Michael, Your life would be very empty <br>
+\ if you had nothing to regret.          /</h2>
+<pre><code>    \   ^__^
+     \  (oo)\_______
+        (__)\       )\/\
+            ||----w |
+            ||     ||
+</code></pre>
+<hr>
+<h2 id="tristan-chicken-little-only-has-to-be--right-once">/ Tristan, Chicken Little only has to be <br>
+\ right once.                            /</h2>
+<pre><code>    \   ^__^
+     \  (oo)\_______
+        (__)\       )\/\
+            ||----w |
+            ||     ||
+</code></pre>
+<p>In our case, for each time our $animal variable changes, we want to test if its value is &quot;stimpy&quot; or not. The <code>bash</code> shell gives us an easy way to do this also, by providing an <code>if</code> statement. there are many things an <code>if</code> statement can check, but the most common checks are to see whether two values are equal That is exactly what we want to do.</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">for</span> animal <span class="hljs-keyword">in</span> ren stimpy; <span class="hljs-keyword">do</span>
+    <span class="hljs-keyword">if</span> [[ <span class="hljs-string">"<span class="hljs-variable">$animal</span>"</span> == <span class="hljs-string">"stimpy"</span> ]]; <span class="hljs-keyword">then</span>
+        <span class="hljs-built_in">echo</span> <span class="hljs-string">"<span class="hljs-variable">$animal</span> is a showboat."</span>
+    <span class="hljs-keyword">else</span>
+        <span class="hljs-built_in">echo</span> <span class="hljs-string">"We like "</span><span class="hljs-variable">$animal</span><span class="hljs-string">" a lot, even if we are not sure why."</span>
+    <span class="hljs-keyword">fi</span>
+<span class="hljs-keyword">done</span>
+
+We like ren a lot, even <span class="hljs-keyword">if</span> we are not sure why.
+stimpy is a showboat.
+</div></code></pre>
+<p>If all of these little pieces make sense to you, then you have all the concepts down to understand our original for loop also. If some things aren't making sense just yet, that's OK. Keep studying examples as you have time and keep asking questions. The amount you get better each year depends on the amount of time you put in, being both eager and humble enough to ask the team for help when you need it, and having fun <img class="emoji" alt="smiley" src="data:image/png;base64,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" /> .</p>
+<p>Here's that original <code>for</code> loop:</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">for</span> animal <span class="hljs-keyword">in</span> $(cowsay -l | tail +2); <span class="hljs-keyword">do</span>
+    <span class="hljs-keyword">if</span> [[ <span class="hljs-string">"<span class="hljs-variable">$animal</span>"</span> == <span class="hljs-string">"stimpy"</span> ]]; <span class="hljs-keyword">then</span>
+        <span class="hljs-built_in">echo</span> <span class="hljs-string">"<span class="hljs-variable">$animal</span>"</span> is a showboat.
+    <span class="hljs-keyword">else</span>
+        fortune | cowsay -f <span class="hljs-string">"<span class="hljs-variable">$animal</span>"</span>
+    <span class="hljs-keyword">fi</span>;
+<span class="hljs-keyword">done</span>
+</div></code></pre>
+<p>And now that you've read all of this, here is a concise explanation of how it works.</p>
+<table>
+<thead>
+<tr>
+<th>section or keyword</th>
+<th>function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>for</strong></td>
+<td>Introduces the for loop.</td>
+</tr>
+<tr>
+<td><strong>animal</strong></td>
+<td>The name of your for-loop variable. note that when you create or set a variable in bash, you do not use a dollar sign at the beginning of its name. when you read its value, you do.</td>
+</tr>
+<tr>
+<td><strong>in</strong></td>
+<td>Introduces the command or list from which you will get values for your for-loop variable.</td>
+</tr>
+<tr>
+<td>$(...)</td>
+<td>Whatever is in this location creates the values that the for-loop variable will iterate over. It does <strong>not</strong> have to be in the form <code>$(...)</code> - it can be any valid expression that returns a list of values.</td>
+</tr>
+<tr>
+<td><strong>do</strong></td>
+<td>This marks the end of the loop header and means that the loop body follows.</td>
+</tr>
+<tr>
+<td><strong>loop body</strong></td>
+<td>Everything between the keywords <strong>do</strong> and <strong>done</strong> are the loop body. Each time there is a new value for the for-loop variable, the loop body executes for that new value. In this particular case, the loop body is an <code>if</code> statement that determines whether the $animal variable is equal to &quot;stimpy&quot; and responds accordingly.</td>
+</tr>
+<tr>
+<td><strong>done</strong></td>
+<td>This means the loop is complete. At this point, the loop tries to get another value for the for-loop variable. If it can get a new value, it performs whatever logic is inside the loop again. if there are no more values available for the for-loop variable, the loop terminates.</td>
+</tr>
+</tbody>
+</table>
+<h1 id=""></h1>
+<blockquote>
+<p><strong>Sidebar: Code of Conduct in Open-Source Software</strong>
+At our meeting, I was concerned about one of the &quot;animals&quot; on the list, but as Dan reassured me, it turned out to be a chicken. Lest you think I'm just a paranoid old man, let me tell you why I think this.</p>
+<p>The Linux development community has had its share of dysfunction, especially in the past. Its founder, Linux Torvalds, was one of the well-known offenders. He treated people poorly for various reasons, such as letting them know if he thought their ideas were stupid. During this time, <code>cowsay</code> and a number of other programs did, in fact, have offensive material in them.</p>
+<p>A few years ago, and strong push was made to include a Code of Conduct in the Linux project. Unsurprisingly, some folks were upset about this, thinking silly things like somehow being nice to each other would mean that the project would have to accept bad code. I guess some people don't actually know how to tell somebody else that their code isn't ready to be accepted or that their feature request won't be implemented without insulting them.</p>
+<p>Anyway, the code of conduct was adopted; Linus has to be nicer now; and the offensive content from programs like <code>cowsay</code> and <code>fortune</code> has apparently been removed.</p>
+</blockquote>
+<h2 id="homework">Homework</h2>
+<p>If you have the time and you'd like to try something new that will reinforce a lot of things in this document, here are some homework ideas. Do as many of these as you have time for. Please ask questions in either #homework or @safe_place if you need help so that the team can get used to helping each other. This will be important for the competition.</p>
+<h3 id="background">Background</h3>
+<p>There is a file called <code>/etc/passwd</code> that contains one line for each user on an Ubuntu computer. The file format might look strange at first, but it is really a bunch of fields separate by colons. Here's the entry for my user account on one of my VMs:</p>
+<pre class="hljs"><code><div>christopherl:x:1000:1000:christopherl,,,:/home/christopherl:/bin/bash
+</div></code></pre>
+<p>The first field is my username, <code>christopherl</code>. The second field, <code>x</code>, is there for historical purposes, but basically means that the hash for my password is not stored here. There are some other fields that have to do with my user ID, group ID, and group name, but then I want to call attention to the last two fields. <code>/home/christopherl</code> is my home directory, and <code>/bin/bash</code> is my default shell, meaning that if I log onto this computer, unless another shell is specified specifically, I will be given a bash shell by default.</p>
+<p>Here are some things I'd like you to try to do with <code>/etc/passwd</code>. For each question, I will give you the name(s) of shell commands that you could use to do the task. To learn how to use these commands, use Google or <code>man</code>.</p>
+<h3 id="tasks">Tasks</h3>
+<ol>
+<li>
+<p>How many users are listed in <code>/etc/passwd</code>? Don't count them yourself; use bash to count them for you.</p>
+<ol>
+<li>You may assume: every line in <code>/etc/passwd</code> corresponds to 1 unique user</li>
+<li>Things that could help: the <code>wc</code> command</li>
+</ol>
+</li>
+<li>
+<p>Can you run a command that will cause <code>bash</code> to print only the line for the user <code>whoopsie</code>?</p>
+<ol>
+<li>Things that could help: <code>grep</code></li>
+</ol>
+</li>
+<li>
+<p>How many users have <code>/bin/false</code> listed as their default shell?</p>
+<ol>
+<li>Things that could help: <code>grep</code> and <code>wc</code>, used together (think pipelines)</li>
+<li>FYI: the default shell is the 7th field for each line in <code>/etc/passwd</code>. I'm not saying you need to use this information, but if you want a 100% certain answer, it might be ueeful.
+<ol>
+<li>Given this comment, other things that might be useful include <code>sed</code> and <code>awk</code>, but those are overkill, and I'd just use <code>cut</code>. I don't expect anybody to figure out anything I'm saying about field number 7. <img class="emoji" alt="smiley" src="data:image/png;base64,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" /></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+<p>What is your home directory? Can you get <code>bash</code> to display it by itself, without the rest of the line from <code>/etc/passwd</code>? For example, if it was me, I'd want the result to just say <code>/home/christopherl</code> but not to have any of the other parts of the line.</p>
+<ol>
+<li>Things that could help: <code>grep</code> and <code>cut</code>. You will want to pay attention to the <code>-t</code> parameter of <code>cut</code>.</li>
+</ol>
+</li>
+</ol>
+
+</body>
+</html>
