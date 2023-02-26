@@ -8,7 +8,7 @@ The initial purpose of this repository will be to hold meeting notes. As the sea
 
 ## Topics for the remainder of the year
 
-The competition is on April 29th, and we have chosen to follow a two-year plan. That means we are in the part of the year where we have to speed up and get through as many of the following topics as we can.
+The competition is on April 22nd, and we have chosen to follow a two-year plan. That means we are in the part of the year where we have to speed up and get through as many of the following topics as we can.
 
 Here is the list. It is not in priority order at this point.
 
@@ -29,7 +29,7 @@ Here is the list. It is not in priority order at this point.
    - Web servers
      - Adding new apps
    - File servers
-   - Database servers
+   - Database servers and queueing services
    - Remote Desktop Server
      - Install mode vs. Execute mode for multi-user software installation
    - Individual team members could specialize in different services
