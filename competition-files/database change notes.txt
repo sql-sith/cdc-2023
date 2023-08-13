@@ -1,0 +1,164 @@
+/** MySQL database username */
+define('DB_USER', 'c844bd88-dfce-11ed-a4e7-0f0f2046e2d8');^M
+
+/** MySQL database password */
+define('DB_PASSWORD', 'df5bf41e-dfce-11ed-84da-d36620283732');^M
+
+
+CREATE OR REPLACE USER `c844bd88-dfce-11ed-a4e7-0f0f2046e2d8`
+                        c844bd88-dfce-11ed-a4e7-0f0f2046e2d8
+IDENTIFIED BY `df5bf41e-dfce-11ed-84da-d36620283732`
+               df5bf41e-dfce-11ed-84da-d36620283732
+               df5bf41e-dfce-11ed-84da-d36620283732
+               df5bf41e-dfce-11ed-84da-d36620283732
+'c844bd88-dfce-11ed-a4e7-0f0f2046e2d8'@'64.5.53.10'
+ c844bd88-dfce-11ed-a4e7-0f0f2046e2d8
+ c844bd88-dfce-11ed-a4e7-0f0f2046e2d8
+ 
+ @db.team5.isucdc.com" IDENTIFIED BY "df5bf41e-dfce-11ed-84da-d36620283732"
+ 
+ create user "c844bd88-dfce-11ed-a4e7-0f0f2046e2d8"@"64.5.53.10" identified by "df5bf41e-dfce-11ed-84da-d36620283732";
+
+select *
+from wp_options
+where option_value like '%178.231.85.253%';
+
+yielded two options that needed updating:
+
+
+update wp_options 
+set option_value = 'http://www.team5.isucdc.com' 
+where option_id in (1, 2);
+
+
+MariaDB [wordpress]> select opt.option_id, left(opt.option_name, 50) as option_name, left(opt.option_value, 60) as option_value 
+    -> from wp_options as opt
+    -> order by opt.option_id;
++-----------+----------------------------------------------------+--------------------------------------------------------------+
+| option_id | option_name                                        | option_value                                                 |
++-----------+----------------------------------------------------+--------------------------------------------------------------+
+|         1 | siteurl                                            | http://www.team5.isucdc.com                                  |
+|         2 | home                                               | http://www.team5.isucdc.com                                  |
+|         3 | blogname                                           | CDC Blog                                                     |
+|         4 | blogdescription                                    | Cubic Development Company                                    |
+|         5 | users_can_register                                 | 1                                                            |
+|         6 | admin_email                                        | root@localhost.host                                          |
+|         7 | start_of_week                                      | 1                                                            |
+|         8 | use_balanceTags                                    | 0                                                            |
+|         9 | use_smilies                                        | 1                                                            |
+|        10 | require_name_email                                 | 1                                                            |
+|        11 | comments_notify                                    | 1                                                            |
+|        12 | posts_per_rss                                      | 10                                                           |
+|        13 | rss_use_excerpt                                    | 0                                                            |
+|        14 | mailserver_url                                     | mail.example.com                                             |
+|        15 | mailserver_login                                   | login@example.com                                            |
+|        16 | mailserver_pass                                    | password                                                     |
+|        17 | mailserver_port                                    | 110                                                          |
+|        18 | default_category                                   | 1                                                            |
+|        19 | default_comment_status                             | open                                                         |
+|        20 | default_ping_status                                | open                                                         |
+|        21 | default_pingback_flag                              | 1                                                            |
+|        22 | posts_per_page                                     | 10                                                           |
+|        23 | date_format                                        | F j, Y                                                       |
+|        24 | time_format                                        | g:i a                                                        |
+|        25 | links_updated_date_format                          | F j, Y g:i a                                                 |
+|        26 | comment_moderation                                 | 0                                                            |
+|        27 | moderation_notify                                  | 1                                                            |
+|        28 | permalink_structure                                |                                                              |
+|        29 | gzipcompression                                    | 0                                                            |
+|        30 | hack_file                                          | 0                                                            |
+|        31 | blog_charset                                       | UTF-8                                                        |
+|        32 | moderation_keys                                    |                                                              |
+|        33 | active_plugins                                     | a:0:{}                                                       |
+|        34 | category_base                                      |                                                              |
+|        35 | ping_sites                                         | http://rpc.pingomatic.com/                                   |
+|        36 | advanced_edit                                      | 0                                                            |
+|        37 | comment_max_links                                  | 2                                                            |
+|        38 | gmt_offset                                         |                                                              |
+|        39 | default_email_category                             | 1                                                            |
+|        40 | recently_edited                                    |                                                              |
+|        41 | template                                           | twentyfourteen                                               |
+|        42 | stylesheet                                         | twentyfourteen                                               |
+|        43 | comment_whitelist                                  | 1                                                            |
+|        44 | blacklist_keys                                     |                                                              |
+|        45 | comment_registration                               | 0                                                            |
+|        46 | html_type                                          | text/html                                                    |
+|        47 | use_trackback                                      | 0                                                            |
+|        48 | default_role                                       | administrator                                                |
+|        49 | db_version                                         | 29630                                                        |
+|        50 | uploads_use_yearmonth_folders                      | 1                                                            |
+|        51 | upload_path                                        |                                                              |
+|        52 | blog_public                                        | 1                                                            |
+|        53 | default_link_category                              | 2                                                            |
+|        54 | show_on_front                                      | posts                                                        |
+|        55 | tag_base                                           |                                                              |
+|        56 | show_avatars                                       | 1                                                            |
+|        57 | avatar_rating                                      | G                                                            |
+|        58 | upload_url_path                                    |                                                              |
+|        59 | thumbnail_size_w                                   | 150                                                          |
+|        60 | thumbnail_size_h                                   | 150                                                          |
+|        61 | thumbnail_crop                                     | 1                                                            |
+|        62 | medium_size_w                                      | 300                                                          |
+|        63 | medium_size_h                                      | 300                                                          |
+|        64 | avatar_default                                     | mystery                                                      |
+|        65 | large_size_w                                       | 1024                                                         |
+|        66 | large_size_h                                       | 1024                                                         |
+|        67 | image_default_link_type                            | file                                                         |
+|        68 | image_default_size                                 |                                                              |
+|        69 | image_default_align                                |                                                              |
+|        70 | close_comments_for_old_posts                       | 0                                                            |
+|        71 | close_comments_days_old                            | 14                                                           |
+|        72 | thread_comments                                    | 1                                                            |
+|        73 | thread_comments_depth                              | 5                                                            |
+|        74 | page_comments                                      | 0                                                            |
+|        75 | comments_per_page                                  | 50                                                           |
+|        76 | default_comments_page                              | newest                                                       |
+|        77 | comment_order                                      | asc                                                          |
+|        78 | sticky_posts                                       | a:0:{}                                                       |
+|        79 | widget_categories                                  | a:2:{i:2;a:4:{s:5:"title";s:0:"";s:5:"count";i:0;s:12:"hiera |
+|        80 | widget_text                                        | a:0:{}                                                       |
+|        81 | widget_rss                                         | a:0:{}                                                       |
+|        82 | uninstall_plugins                                  | a:0:{}                                                       |
+|        83 | timezone_string                                    | America/Chicago                                              |
+|        84 | page_for_posts                                     | 0                                                            |
+|        85 | page_on_front                                      | 0                                                            |
+|        86 | default_post_format                                | 0                                                            |
+|        87 | link_manager_enabled                               | 0                                                            |
+|        88 | initial_db_version                                 | 29630                                                        |
+|        89 | wp_user_roles                                      | a:5:{s:13:"administrator";a:2:{s:4:"name";s:13:"Administrato |
+|        90 | _transient_random_seed                             | 6c5374b8a29a321825146ab21238b44d                             |
+|        91 | widget_search                                      | a:2:{i:2;a:1:{s:5:"title";s:0:"";}s:12:"_multiwidget";i:1;}  |
+|        92 | widget_recent-posts                                | a:2:{i:2;a:2:{s:5:"title";s:0:"";s:6:"number";i:5;}s:12:"_mu |
+|        93 | widget_recent-comments                             | a:2:{i:2;a:2:{s:5:"title";s:0:"";s:6:"number";i:5;}s:12:"_mu |
+|        94 | widget_archives                                    | a:2:{i:2;a:3:{s:5:"title";s:0:"";s:5:"count";i:0;s:8:"dropdo |
+|        95 | widget_meta                                        | a:2:{i:2;a:1:{s:5:"title";s:0:"";}s:12:"_multiwidget";i:1;}  |
+|        96 | sidebars_widgets                                   | a:5:{s:19:"wp_inactive_widgets";a:0:{}s:9:"sidebar-1";a:6:{i |
+|        97 | cron                                               | a:6:{i:1682049288;a:3:{s:16:"wp_version_check";a:1:{s:32:"40 |
+|        99 | _site_transient_update_core                        | O:8:"stdClass":3:{s:7:"updates";a:0:{}s:15:"version_checked" |
+|       100 | _site_transient_update_plugins                     | O:8:"stdClass":1:{s:12:"last_checked";i:1682044312;}         |
+|       103 | _site_transient_update_themes                      | O:8:"stdClass":1:{s:12:"last_checked";i:1682044312;}         |
+|       110 | can_compress_scripts                               | 1                                                            |
+|       136 | WPLANG                                             |                                                              |
+|       155 | _site_transient_timeout_theme_roots                | 1682046112                                                   |
+|       156 | _site_transient_theme_roots                        | a:6:{s:14:"twentyfourteen";s:7:"/themes";s:14:"twentythirtee |
+|       158 | _transient_timeout_plugin_slugs                    | 1682130810                                                   |
+|       159 | _transient_plugin_slugs                            | a:2:{i:0;s:19:"akismet/akismet.php";i:1;s:9:"hello.php";}    |
+|       160 | _transient_timeout_dash_4077549d03da2e451c8b5f0022 | 1682087610                                                   |
+|       161 | _transient_dash_4077549d03da2e451c8b5f002294ff51   | <div class="rss-widget"><p><strong>RSS Error</strong>: WP HT |
+|       162 | _transient_featured_content_ids                    | a:0:{}                                                       |
+|       163 | _transient_is_multi_author                         | 0                                                            |
+|       164 | _transient_twentyfourteen_category_count           | 1                                                            |
++-----------+----------------------------------------------------+--------------------------------------------------------------+
+111 rows in set (0.00 sec)
+
+there are wordpress users named cdc, Richard, and root (they are in the wp_users table). I logged in as each of them in the wordpress app and changed their wordpress passwords:
+
+cdc: changed password from cdc to: 
+    i like coffee as much as AMPUTATION
+
+richard: changed password from cdc to:
+    there is NO RICHARD. richard is a duck.
+    
+root: changed password from cdc to:
+    i am GROOT!! rats. (sigh). still just root.
+

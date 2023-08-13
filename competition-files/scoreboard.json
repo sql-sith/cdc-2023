@@ -1,0 +1,116 @@
+{
+  "scoreboard": "Scoreboard",
+  "scoreboard_url": "https://iscore.iseage.org/",
+  "team": [
+    {
+      "name": "Team 4: Cyber Sharks",
+      "url": "https://iscore.iseage.org/reports/team/204/",
+      "overall_score": "760.21",
+      "flags": "155",
+      "usability": "120",
+      "services": "156",
+      "anomalies": "97",
+      "reports": "138",
+      "other": "92"
+    },
+    {
+      "name": "Team 5: CDC Team 5",
+      "url": "https://iscore.iseage.org/reports/team/205/",
+      "overall_score": "690.57",
+      "flags": "190",
+      "usability": "106",
+      "services": "157",
+      "anomalies": "70",
+      "reports": "107",
+      "other": "58"
+    },
+    {
+      "name": "Team 13: Unauthorized Access",
+      "url": "https://iscore.iseage.org/reports/team/213/",
+      "overall_score": "661.35",
+      "flags": "94",
+      "usability": "186",
+      "services": "150",
+      "anomalies": "93",
+      "reports": "103",
+      "other": "32"
+    },
+    {
+      "name": "Team 3: sudo stop_hacking_me --force",
+      "url": "https://iscore.iseage.org/reports/team/203/",
+      "overall_score": "586.41",
+      "flags": "156",
+      "usability": "40",
+      "services": "112",
+      "anomalies": "115",
+      "reports": "126",
+      "other": "36"
+    },
+    {
+      "name": "Team 2: Kuhl Kidz",
+      "url": "https://iscore.iseage.org/reports/team/202/",
+      "overall_score": "570.55",
+      "flags": "132",
+      "usability": "66",
+      "services": "139",
+      "anomalies": "91",
+      "reports": "72",
+      "other": "68"
+    },
+    {
+      "name": "Team 7: CDC Team 7",
+      "url": "https://iscore.iseage.org/reports/team/207/",
+      "overall_score": "471.22",
+      "flags": "187",
+      "usability": "40",
+      "services": "82",
+      "anomalies": "91",
+      "reports": "40",
+      "other": "28"
+    },
+    {
+      "name": "Team 10: Homomorphic",
+      "url": "https://iscore.iseage.org/reports/team/210/",
+      "overall_score": "467.89",
+      "flags": "144",
+      "usability": "26",
+      "services": "120",
+      "anomalies": "86",
+      "reports": "49",
+      "other": "40"
+    },
+    {
+      "name": "Team 12: Winter Minions",
+      "url": "https://iscore.iseage.org/reports/team/212/",
+      "overall_score": "451.94",
+      "flags": "95",
+      "usability": "80",
+      "services": "85",
+      "anomalies": "58",
+      "reports": "96",
+      "other": "36"
+    },
+    {
+      "name": "Team 14: CDC Team 14",
+      "url": "https://iscore.iseage.org/reports/team/214/",
+      "overall_score": "390.42",
+      "flags": "90",
+      "usability": "0",
+      "services": "116",
+      "anomalies": "94",
+      "reports": "57",
+      "other": "32"
+    },
+    {
+      "name": "Team 11: Zeus",
+      "url": "https://iscore.iseage.org/reports/team/211/",
+      "overall_score": "371.28",
+      "flags": "110",
+      "usability": "0",
+      "services": "93",
+      "anomalies": "68",
+      "reports": "63",
+      "other": "36"
+    }
+  ]
+}

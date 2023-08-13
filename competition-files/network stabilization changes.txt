@@ -1,0 +1,137 @@
+gitlab only:
+    - apt remove network-manager
+
+check subnet mask
+    - ip addr (Linux)
+    - ipconfig (Windows)
+
+check DNS server
+    - cat /etc/resolv.conf (Linux)
+    - in Ubuntu:
+        - systemctl disable systemd-resolvd
+        - systemctl disable systemd-avahi.service
+        - rm /etc/resolv.conf # it will be a symlink
+        - put this into a new /etc/resolv.conf file:
+            nameserver 199.100.16.100
+            search team5.isucdc.com
+    - ipconfig /all | findstr /i DNS (Windows)
+
+check proxies
+    - /etc/environment on ubuntu
+        # cleonard, 2023-04-20:
+        # set proxy config via profie.d - should apply for all users
+
+        export http_proxy="http://199.100.16.100:3128/"
+        export https_proxy="http://199.100.16.100:3128/"
+        export ftp_proxy="http://199.100.16.100:3128/"
+        export no_proxy="127.0.0.1,localhost"
+
+        # For curl
+        export HTTP_PROXY="http://199.100.16.100:3128/"
+        export HTTPS_PROXY="http://199.100.16.100:3128/"
+        export FTP_PROXY="http://199.100.16.100:3128/"
+        export NO_PROXY="127.0.0.1,localhost"
+    - /etc/profile on centos
+        # cleonard, 2023-04-20:
+        # set proxy config via profie.d - should apply for all users
+        #
+        PROXY_URL="http://199.100.16.100:3128/"
+
+        export http_proxy="$PROXY_URL"
+        export https_proxy="$PROXY_URL"
+        export ftp_proxy="$PROXY_URL"
+        export no_proxy="127.0.0.1,localhost"
+
+        # For curl
+        export HTTP_PROXY="$PROXY_URL"
+        export HTTPS_PROXY="$PROXY_URL"
+        export FTP_PROXY="$PROXY_URL"
+        export NO_PROXY="127.0.0.1,localhost"
+    - Internet Options | Connections | LAN Settings | Proxy Server on Windows
+        - Path may vary depending on version of windows
+        - Set "Use a proxy server..." to true
+        - Set "Address" to 199.100.16.100 and "Port" to 3128
+        - Set "Bypass proxy server for local addresses" to true
+        - Save your changes
+
+check /etc/networks (Linux) or C:\Windows\System32\Drivers\etc\networks (Windows)
+    - correct content differs by os
+
+routes
+    - Linux:
+        route # <-- check routes
+        net del everything
+        net add -net 64.5.53.0 netmask 255.255.255.0 dev <dev>
+        net add default gw 64.5.53.254
+
+    - Windows:
+        route print # <-- check routes 
+        net --help for details, similar syntax
+
+Hostnames
+    - Linux:
+        - edit /etc/hosts (Linux) or C:\Windows\System32\Drivers\etc\hosts (Windows)
+            - differs by os
+        - fqdn into /etc/hostname (Linux only)
+        - hostnamectl set-hostname my.new-hostname.server (Linux only)
+    - Windows:
+        - setting the domain name:
+            - Network and Internet Settings (or Network and Sharing Center) | Adapter Settings | Properties | IPv4 | Properties
+            - Advanced | DNS
+            - Append these suffixes in order 
+                - add team5.isucdc.com as the only entry
+                - Ensure that "Register this connection's addresses in DNS" is NOT checked.
+                - Save your changes.
+        - setting the host name:
+            - Rename this computer
+                - Click the "Change" button
+                - Click the "More" button
+                - In the "Primary DNS Suffix of this computer" box, put team5.isucdc.com.
+                - Save your changes.
+                - Reboot the computer.
+
+----------------- REBOOT
+
+check proxies
+check routes
+check /etc/networks (Linux) or C:\Windows\System32\drivers\etc\networks
+check all hostname variants (Linux only)
+
+
+# testing
+curl google.com
+
+for f in 5 10 15 20 30 40; do
+  ping 64.5.53.${f}
+done
+
+f=<<DONE
+billing (.5) can ping:
+    .5
+    .20
+
+web (.10) can ping:
+    .10
+    .15
+    .40
+
+db (.15) can ping:
+    .10
+    .15
+    .30
+    .40
+
+kali (.20) can ping:
+    ????????????????????????????
+
+game (.30) can ping:
+    .15
+    .30
+
+gitlab (.40) can ping:
+    .10
+    .15
+    .40
+
+DONE
+
