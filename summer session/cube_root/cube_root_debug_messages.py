@@ -1,5 +1,20 @@
-# import logging
-# import sys
+import logging
+import sys
+import argparse
+
+from typing import Dict
+
+# globals
+fib_cache = {}
+
+
+def get_parsed_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--logging_level', type=str, nargs='?', default='WARNING',
+                        choices=['DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'],
+                        help='The logging level to use. Default is WARNING.')
+
+    return parser.parse_args()
 
 
 def cube_root(number, tolerance):
@@ -23,45 +38,63 @@ def cube_root(number, tolerance):
 
     # Set an initial guess for the cube root of the number. 
     guess = number / 3
-    print(f"Initial guess: {guess}")
+    logger.debug(f"Initial guess: {guess}")
 
     # Keep looping until we reach our desired accuracy. 
     while abs(guess ** 3 - number) > tolerance:
         # Use Newton's method to improve our guess.
         previous_guess = guess
         guess = (2 * guess + (number / (guess ** 2))) / 3
+        logger.debug(f"New guess: {guess}")
         if abs(guess-previous_guess) <= tolerance:
             break
 
-        print(f"New guess: {guess}")
-
-    print(f"Previous guess is solution")
+    logger.debug(f"Previous guess is solution")
     return numeric_sign * guess
 
 
-def fibonacci(term: int, cache: dict) -> int:
+def fibonacci(term: int) -> int:
     """
-        challenges:
-            1. do memoization in a better way (preferably without passing in fib_cache)
-            2. do memoization without recursion (supporting large values for term)
+        to do:
+            1. [done, 2023-08-17] do memoization in a better way (preferably without passing in fib_cache)
+            2. [done, 2023-08-17] do memoization without recursion (supporting large values for term)
 
+        bug fixes:
+            1. [done, 2023-08-17] i apparently forgot the formula for the fibonacci sequence. oops. fixed.
+
+    Returns:
+        fib_cache[term]: int
     """
-
-    if term in cache.keys():
-        return cache[term]
-    else:
-        cache[term] = fibonacci(term - 1, cache) + term
-        return cache[term]
-
-
-if __name__ == '__main__':
-
     global fib_cache
-    fib_cache = {1: 1, 2: 2}
+    if fib_cache == {} or fib_cache is None:
+        fib_cache = {0: 0, 1: 1}
 
-    # logger = logging.getLogger('cube_root')
-    # logger.addHandler(logging.StreamHandler(stream=sys.stderr))
+    if term in fib_cache.keys():
+        return fib_cache[term]
+    else:
+        current_max_term = max(fib_cache.keys())
+        for current_term in range(current_max_term, term):
+            fib_cache[current_term + 1] = fib_cache[current_term] + fib_cache[current_term - 1]
+        return fib_cache[term]
 
+
+def start_main():
+    cube_roots_calculated = 0
+
+    for fib_idx in range(1, 20):
+        for tolerance_exp in range(2, -3, -1):
+            target = fibonacci(fib_idx)
+            tolerance = 10 ** tolerance_exp
+            answer = cube_root(target, tolerance)
+            cube_roots_calculated += 1
+            logger.debug(f"\nThe cube root of {target}, to within {tolerance}, is {answer}\n.")
+
+    print(f"Successfully calculated the cube roots of {cube_roots_calculated} numbers.")
+
+
+def configure_logger(logging_level) -> logging.Logger:
+    new_logger = logging.getLogger('cube_root')
+    new_logger.addHandler(logging.StreamHandler(stream=sys.stderr))
     # the logging package defines these constants:
     #
     # logging.DEBUG:    10
@@ -91,11 +124,13 @@ if __name__ == '__main__':
     #
     # the log messages for this program all have log level DEBUG, so if you sent log logger's log level to DEBUG in
     # following statement, you will see the log messages; otherwise, you will not.
-    # logger.setLevel("WARNING")
+    new_logger.setLevel(logging_level)
+    return new_logger
 
-    for fib_idx in range(1, 20):
-        for tolerance_exp in range(10, -15, -1):
-            target = fibonacci(fib_idx, fib_cache)
-            tolerance = 10 ** tolerance_exp
-            answer = cube_root(target, tolerance)
-            print(f"The cube root of {target}, to within {tolerance}, is {answer}.")
+
+if __name__ == '__main__':
+
+    # get logging level from command-line arguments and configure logging:
+    args = get_parsed_args()
+    logger = configure_logger(args.logging_level)
+    start_main()
