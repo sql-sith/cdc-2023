@@ -34,10 +34,9 @@ These are the steps I performed to prep my laptop for the 2023-08-31 class:
 
    > Python uses semantic versioning, where version `x.y.z` has major version `x`, minor version `y`, and patch level `z`. Major versions are increased when there are breaking changes to the product, so that not all scripts that ran on the older major version will run successully on the newer one. The minor version increases when new features are added, and the patch level changes when security remediations and bug fixes are applied.
    >
-   > Python does not release major version upgrades very frequently, but minor version upgrades happen about once a year, with patch-level updates happening frequently.
+   > Python does not release major version upgrades very frequently, but minor version upgrades happen about once a year, with patch-level updates happening frequently. While there are no hard-and-fast rules about "how current" to stay on Python versions, I try to stay on either the most current or second-most current minor version.
    >
-   > You should try to stay on a recent  releases new revisions fairly often, but you should try to stay on the You should always try to stay
-   >
+
 2. Run the following in an elevated PowerShell session to enable script execution
 
    The execution policy of your computer will allow you to run some of the python scripts we will need while we set up our project.
@@ -48,6 +47,7 @@ These are the steps I performed to prep my laptop for the 2023-08-31 class:
    ```powershell
    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine
    ```
+
 3. Run the following in a normal (non-elevated) PowerShell session
 
 ```powershell
