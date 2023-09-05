@@ -2,6 +2,8 @@
 
 We will build a tiny, toy Python application using Python. This will allow us to demonstrate why Little Bobby Tables is a bad boy, why stars are evil, and what you can do in your code to always, always, prevent SQL injection.
 
+Note that I have changed the directory and file names so that I can create multiple versions of the Python script.
+
 These are the steps I performed to prep my laptop for the 2023-08-31 class:
 
 ## SQL Server Configuration
@@ -79,7 +81,9 @@ These are the steps I performed to prep my laptop for the 2023-08-31 class:
    python -m pip install pyodbc
 ```
 
+<!-- markdownlint-disable MD026 -->
 ## Ready to Code!
+<!-- markdownlint-enable MD026 -->
 
 At this point, we are ready to code. I have put a sample Python app in this folder. It is based on the script we got to work right at the end of class, but I cleaned it up a little.
 
