@@ -5,7 +5,6 @@ DRIVER = "ODBC Driver 18 for SQL Server"
 SERVER = "Caerdydd"
 DATABASE = "AdventureWorks2022"
 
-QUERY_REPLACE_TOKEN = '[REPLACEME]'
 DEBUG = True
 
 DEPARTMENT_GROUP_LIST = f" \
@@ -16,7 +15,7 @@ DEPARTMENT_GROUP_LIST = f" \
 DEPARTMENT_GROUP_FILTER = f" \
     SELECT d.DepartmentID, d.GroupName, d.Name \
     FROM HumanResources.Department AS d \
-    WHERE d.GroupName = '{QUERY_REPLACE_TOKEN}' \
+    WHERE d.GroupName = ? \
     ORDER BY d.GroupName \
     "
 
@@ -46,15 +45,11 @@ if __name__ == '__main__':
             if not department_group:
                 break
             print(f'Here are the departments within department group {department_group}:')
-            query = DEPARTMENT_GROUP_FILTER.replace(QUERY_REPLACE_TOKEN, department_group)
 
-            if DEBUG:
-                print(query)
-            execute_query(conn, query)
-
+            execute_query_with_parameters(conn, DEPARTMENT_GROUP_FILTER, [department_group])
     except pyodbc.ProgrammingError:
         _, value, _ = sys.exc_info()
-        print(f'Error running query: {str(value)}.')
+        print(f'Error running query: {value}.')
         print('Continuing to next loop iteration.')
     finally:
         conn.close()
