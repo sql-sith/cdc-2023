@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>2023-02-25-meeting-notes.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="february-25-2023-meeting">February 25, 2023 Meeting</h1>
+<!-- markdownlint-disable MD033 -->
+<h2 id="agenda">Agenda</h2>
+<ol>
+<li>A look at a suspicious email</li>
+<li>DNS: Conclusion
+<ul>
+<li>Telling your VM which nameserver to use</li>
+<li>What you need to know about DNS for the competition</li>
+<li>Why I showed you more about DNS than you need to know</li>
+</ul>
+</li>
+<li>A look back at the <strong>How the Internet Works</strong> diagram
+<ul>
+<li>We just covered DNS</li>
+<li>We are going to talk about firewalls today</li>
+</ul>
+</li>
+<li>Configuring a firewall on our VM
+<ul>
+<li>Local or shared firewalls?</li>
+<li>The <code>ufw</code> is only <code>u</code> if it's the <code>gufw</code></li>
+</ul>
+</li>
+<li>Addendum: testing firewalls
+<ul>
+<li>with ping</li>
+<li>with telnet</li>
+<li>with nc</li>
+</ul>
+</li>
+</ol>
+<h2 id="a-look-at-a-suspicious-email">A look at a suspicious email</h2>
+<p>Well, to be honest, the email was pretty obviously suspicious. But you folks nailed a lot of important ideas of what to look for in an iffy email. Here's what I remember you pointing out as important things to consider.</p>
+<img width="50%" src="file:///home/chris/documents/git/sql-sith/cdc-2023/meeting-notes/images/2023-02-25-sketchy-email.png" alt="sketchy sketchy" style="border:5px solid black; vertical-align:middle; margin-left: 10%; margin-top 10px; margin-bottom: 10px">
+<ul>
+<li>Do you know who the sender is?</li>
+<li>Are they making a weird request?
+<ul>
+<li>Like (in this email) asking if it's really you, or asking you to send them $1)</li>
+</ul>
+</li>
+<li>Check the company trademarks to make sure they look right
+<ul>
+<li>Logos</li>
+<li>Exact spellings of company name</li>
+</ul>
+</li>
+<li>Check the links to see if they go to the right domain. But relying on your eyeballs can be tricky. For example:
+<ul>
+<li>Once at competition, the red team tricked people into visiting <code>isaege.org</code>. The correct competition domain is <code>iseage.org</code>.</li>
+<li>Once at a GoDaddy internal conference called <strong>TechFest 2017</strong>, our security team fished people by using an email that included a link to techfest2017@gocladdy.com. Depending on the font used by people's email programs, <code>cl</code> next to each other can look a lot like <code>d</code>.</li>
+<li>Letters from other languages can be used to fool people. In the strings <code>ԁаtаƅаѕеցսу.com</code> and <code>databaseguy.com</code>, the only characters that are the same are <code>t</code> and <code>.com</code>. Every other character is a look-alike that does not exist in the English alphabet.</li>
+</ul>
+</li>
+<li>Always go to a website directly rather than clicking on links or buttons embedded in emails.</li>
+</ul>
+<p>We discussed that last point in some detail. You should always go to an organization's website in your browser, rather than clicking links in their emails, unless it's painfully obvious that the email is legitimate.</p>
+<p>If you cannot figure out how to perform some action that the link or button would perform, either call the organization for assistance, or do whatever is necessary to convince yourself that the email and the link or button are legitimate. If you can't, don't click it right away. Let it sit for a while and let your mind turn it over. Is it worth the risk? You'll probably have a better idea of if it is in a couple of hours rather than deciding &quot;right now.&quot; &quot;Right now&quot; is always a time that has urgency associated with it, and bad actors deliberately try to create a sense of pressure to get people to act before they have time to assess situations thoughtfully.</p>
+<h2 id="dns-conclusion">DNS: Conclusion</h2>
+<h3 id="telling-your-vm-which-nameserver-to-use">Telling your VM which nameserver to use</h3>
+<p>Last week, I had trouble getting my VM to change its default DNS server to use the new one I'd just set up. Long story short, I made mistakes.</p>
+<p>Usually, a personal computer (desktop or laptop) should have its DNS settings left alone. If it is getting an IP address automatically from a DHCP server, it will almost certainly be assigned appropriate DNS settings by its DHCP server also, if it is left at its default settings.</p>
+<p>However, as a point of learning, I wanted to show how to turn this off. This is easy in Windows. Trust me. I can show you if you want.</p>
+<p>In Ubuntu 20/22, if you don't want to use automatically-assigned DNS servers, there are at a couple of different ways to make this happen. This will matter at the competition because you will need to point your servers at the DNS servers that the white team provides for you.</p>
+<p>There are a few ways to control of the contents of <code>/etc/resolv.conf</code>, but the easiest only takes a few steps. This approach relies on the fact that when the system is controlling this file, it is really a link that points to another file. In this case, we can delete the link and create a &quot;real&quot; file and then put whatever contents we want into that file. First, make sure that the current <code>resolv.conf</code> is a link.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># become root:</span>
+sudo -i
+
+<span class="hljs-comment"># check whether /etc/resolv.conf is a link or a regular file:</span>
+ls -al /etc/resolv.conf
+
+<span class="hljs-comment"># the output will look something like this if the file is a link.</span>
+<span class="hljs-comment"># the "l" at the beginning of the line tells you that the file </span>
+<span class="hljs-comment"># type is "link," and the path at the end of the line shows the</span>
+<span class="hljs-comment"># location of the file that the link points to. These are the</span>
+<span class="hljs-comment"># two ways you can tell that this file is a link to another file.</span>
+lrwxrwxrwx 1 root root 39 Feb 18 13:20 /etc/resolv.conf -&gt; ../run/systemd/resolve/stub-resolv.conf
+
+<span class="hljs-comment"># the output will look something like this if it is a regular</span>
+<span class="hljs-comment"># file. note that the file type (the first character) is "-",</span>
+<span class="hljs-comment"># which means "regular file," and that there no second file</span>
+<span class="hljs-comment"># name at the end of the line. That's how you can tell this</span>
+<span class="hljs-comment"># is a regular file and not a link.</span>
+-rw-r--r-- 1 root root 933 Mar  3 23:05 /etc/resolv.conf
+</div></code></pre>
+<p>If <code>/etc/resolv.conf</code> is a link, simply delete it and use an editor to create a new file with the same name that contains the IP addresses of the nameservers you want to use. You might also want to include search domains. For example, if the competition gives you a nameserver with the IP address 1.2.3.4, and they give you a domain name of <code>cdc99.net</code>, then you could do something like this to set up a permanent <code>/etc/resolv.conf</code>:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># become root:</span>
+sudo -i
+
+<span class="hljs-comment"># delete the link:</span>
+rm /etc/resolv.conf
+
+<span class="hljs-comment"># create a new /etc/resolv.conf:</span>
+<span class="hljs-built_in">echo</span> <span class="hljs-string">"nameserver 1.2.3.4
+search cdc99.net"</span> &gt;&gt; /etc/resolv.conf
+</div></code></pre>
+<p>If you are a sane individual, you will probably want to use a real editor to create the new <code>/etc/resolv.conf</code> in the last step, but I needed to do it in a script, and use <code>echo</code> to redirect text into a file might not seem fancy, but it works.</p>
+<h3 id="what-you-need-to-know-about-dns-for-the-competition">What you need to know about DNS for the competition</h3>
+<p>Basically, you probably just need to know what the A (address) records are for and how to define them in a Web app.</p>
+<h3 id="why-i-showed-you-more-about-dns-than-you-need-to-know">Why I showed you more about DNS than you need to know</h3>
+<p>Hopefully I've told you by now that I don't really &quot;teach to the test.&quot; It's not my goal to tell you exactly what you need to know to do well at the competition. My goal is to help you do well in life. If your future life includes any kind of network work or anything &quot;adjacent to&quot; networking (like programming), you should know that DNS is a big deal.</p>
+<p>Without it, it's the Internet equivalent of every vehicle in the world running out of fuel at the same time that the whole world runs out of electricity. Stunned, we all try to go next door to talk with our neighbors about what's happening, only to find out that we don't know their address anymore and have no idea where they live.</p>
+<p>If DNS breaks, it's an Internet Apocolypse.</p>
+<h2 id="a-look-back-at-the-a-href%22imageshow-the-internet-works-with-backgroundpng%22how-the-internet-worksa-diagram">A look back at the <a href="images/How the Internet Works With Background.png"><strong>How the Internet Works</strong></a> diagram</h2>
+<p>I have to shorten my comments a little bit, but we got this diagram out for the first time in a while, and noted that we were starting to talk about services that covered more of what was drawn on that diagram. In the interest of getting these notes done, that's all I'm going to say about this tonight.</p>
+<h2 id="configuring-a-firewall-on-our-vm">Configuring a firewall on our VM</h2>
+<p>The firewall we will use is <code>ufw</code>. This seems to come pre-installed on Ubuntu, but if it's not, you can use <code>apt</code> to install it.</p>
+<h3 id="local-or-shared-firewalls">Local or shared firewalls?</h3>
+<p>You should use a separate, local copy of <code>ufw</code> on every server. This is better than running one shared firewall for your network, because it minimizes the risk of a single firewall failing.</p>
+<h3 id="the-ufw-is-only-u-if-its-the-gufw">The <code>ufw</code> is only <code>u</code> if it's the <code>gufw</code></h3>
+<p>As we saw during our discussion, <code>gufw</code> makes <code>ufw</code> much more approachable. It can even show you information about what processes are listening for connections currently, and create rules based on those processes, if you ask it to.</p>
+<p>Remember that there are three network &quot;profiles&quot; in <code>ufw</code>: home, office, and public. For the competition, I'd recommend either a) reading until you really understand how and when <code>ufw</code> switches between network profiles; or b) configuring each profile with the same rules.</p>
+<h2 id="addendum-testing-firewalls">Addendum: testing firewalls</h2>
+<p>After defining firewall rules, you always want to test them and see if they work. If the service you are trying to allow through a firewall is not working, there is a &quot;cheap&quot; test you can run before digging deeper.</p>
+<h3 id="testing-firewalls-with-telnet">Testing firewalls with <code>telnet</code></h3>
+<p>That's right, we have a productive use for <code>telnet</code>, that most insecure remote access application!</p>
+<p>One of the nice things about telnet is that it's really easy to use it to connect to whatever TCP port you want to on another computer. The goal isn't to get a meaningful interaction with the other computer. It's just to check if you get any response at all. Suppose you are trying to setup a firewall rule allowing users to connect to your server, www.acme.com, on port 443. What you can do is run this from another computer that is on the other side of the firewall:</p>
+<pre class="hljs"><code><div>chris@detroit:~<span class="hljs-comment"># telnet www.acme.com 443</span>
+Trying 23.93.76.124...
+Connected to acme.com.
+Escape character is <span class="hljs-string">'^]'</span>.
+^]
+telnet&gt; close
+Connection closed.
+chris@detroit:~<span class="hljs-comment">#</span>
+</div></code></pre>
+<p>There are a few things I should explain:</p>
+<ul>
+<li>Notice that I put the port number after the name of the computer I'm connecting to when I launched telnet: <code>telnet www.acme.com 443</code>.</li>
+<li>Yes, <code>acme.com</code> is a apparently a real domain. 443 is the standard port for secure web servers, so I actually got a connection.</li>
+<li>At that point, the test is successful. I have gotten from wherever my computer is running to port 443 on wherever www.acme.com points to. That's what I wanted to check; <code>telnet</code> has confirmed that this connection path is physicall open.</li>
+<li>Sometimes you won't get the nice &quot;Connected to yada yada&quot; message. Your screen might go black or something. That's OK. That's still a success.</li>
+<li>A failure is when there is literally no sign of activity from the computer you are trying to telnet to.
+<ul>
+<li>If this happens, the test has failed.</li>
+<li>This could mean that the target server is not listening on the port you are targeting.</li>
+<li>It could also mean that your firewall is not setup correctly, or that other firewalls between your <code>telnet</code> client and the server are not allowing the traffic to pass.</li>
+</ul>
+</li>
+<li>To exit <code>telnet</code>:
+<ul>
+<li>If your connection was successful, <code>telnet</code> should have told you that a specific key is an &quot;escape key.&quot; It seems like it is usually the two-key combination <code>Ctrl-]</code>. Tapping those keys should bring you to a <code>telnet</code> prompt, where you type <code>close</code> and then <code>ENTER</code> to disconnect the session.</li>
+<li>If your connection was not successful, you may be able to break out of <code>telnet</code> using <code>Ctrl-C</code>.</li>
+</ul>
+</li>
+</ul>
+
+</body>
+</html>

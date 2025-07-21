@@ -1,5 +1,5 @@
 # Cedar Rapids Area Homeschools
-
+<!-- markdownlint-disable MD033 -->
 ## IT Club Cyber Defense, 2022-2023 season
 
 The initial purpose of this repository will be to hold meeting notes. As the season progresses, we may put source code in here, or solutions to problems we work on, or anything else we think will be valuable to the team as a whole.
@@ -20,10 +20,8 @@ Here is the list. It is not in priority order at this point.
    - ~~Examples: web servers, file servers, database servers~~
 4. Packet sniffing
    - Example: Wireshark
-5. Firewalls
-   - February 25
-   - Local ~~and shared~~ (February 25; just use local)
-   - ~~PfSense~~ (on the list because Michael wants to make sure we *don't* use PfSense)
+5. ~~Firewalls~~ (February 25)
+   - ~~Local and shared~~
 6. ~~DNS – the Domain Name System~~ (February 11-25)
 7. Focus on important services
    - Web servers
@@ -34,4 +32,4 @@ Here is the list. It is not in priority order at this point.
      - Install mode vs. Execute mode for multi-user software installation
    - Individual team members could specialize in different services
 8. Jailing ssh sessions
-9.  Windows equivalents to everything we learned in Linux
+9. Windows equivalents to everything we learned in Linux
